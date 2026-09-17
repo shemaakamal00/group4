@@ -63,10 +63,14 @@ bash
 ## Projektstruktur
 
 ### Pages
-- HomePage/”Översikt” : Dashboard > överblick, senaste ansökningar och Mål. 
+- HomePage/Landningssida: "Välkommen - logga in eller sign-up" 
 - ApplicationsPage/”Ansökningar” : Visar och hanterar användarens ansökningar
 - GoalsPage/”Mål” : Visar och hanterar användarens mål
+- ArticlesPage: En sida som exponerar articleCards för users och där admin kan skapa articles.
+- ArticlePage: Sidan som visar en specifik article.
+- DashboardPage/Översikt: Sida som innehåller statistik och dashboard
 
+(gammal text nedan)
 Förslag
 - ArticlesPage: En sida där betygskriteriet ”- En administratör ska kunna lägga till innehållssidor och välja vilken nivå man måste ha för att få se den ” kan uppfyllas. Admin kan skapa en Article, egentligen endast med Rubrik, beskrivning, brödtext och vilken plan man måste få ha för att få läsa den. I verkligheten kanske arikeln innehållit t.ex en video om retorik-tips eller dylikt, lite mer ”preimium-content”. Varje ArticleCard öppnas som en ny page.
 -ArticlePage: Varje artikel får egen url (/articles/:id).
@@ -77,9 +81,7 @@ Förslag
 - GoalModal: create/view/edit ett goal
 - ProfileModal: Visar användarens egna info (kan redigeras?), plan, och kvitton. 
 - UpgradeModal: En vy där alla perks med att uppgradera listas, + betalning
-- AdminSettingsModal: En överblick över t.ex hur många applications varje payment plan får ha, och vilka features som är tillgängliga.
-
-Förslag
+- AdminSettingsModal: En överblick över t.ex hur många applications varje payment plan får ha,  och vilka features som är tillgängliga.
 - ArticleModal: create/view/edit en Article.
 
 ### Components
@@ -96,7 +98,6 @@ Förslag
 - Modal(Generell modal-prefab)
 - Loader/spinner
 
-Förslag
 - ArticleCard
 - ArticleList
 - ArticleForm (titel, beskrivning, brödtext, required plan)
