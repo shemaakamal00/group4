@@ -20,13 +20,14 @@ function Modal({ isOpen, onClose, title, children }:ModalProps){
             return;
         };
     
-        //skapar ett keyboard-event 'on escape pressed'
+        //skapar ett keyboard-event om Esc trycks
         function handleKeyDown(event: KeyboardEvent){
             if (event.key ==="Escape"){
                 onClose();
             }
         };
 
+        //registrerar funktionen hos webbläsaren(när ett "keydown"-event inträffar, kör..)
         document.addEventListener("keydown", handleKeyDown);
         
         return () => {
@@ -44,9 +45,9 @@ function Modal({ isOpen, onClose, title, children }:ModalProps){
 
   return(
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(event) => event.stopPropagation()}>
+      <div className="modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
         <div className="modal__head">
-          {title && <h2>{title}</h2>}
+          {title && <h2 id="modal-title">{title}</h2>}
 
           <button type="button" className="btn btn--secondary" onClick={onClose}>
             Stäng
