@@ -7,6 +7,8 @@ function App() {
 
   //Modal-öppen/stängd-state
   const [isModalOpen, setIsModalOpen] = useState(false);
+  //Modal title
+  const placeholderTitle =" En placeholder-title"
 
   return(
     <main className="container">
@@ -16,7 +18,9 @@ function App() {
         Modal-testknapp
       </button>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={placeholderTitle} >
+
+        {/*HÄR används {children} från modal-mallen */}
         <p>Innehåll per källa! Exempel:</p>
         <br></br>
 
