@@ -6,7 +6,7 @@ import "dotenv/config";
 const app = express ();
 app.use(express.json());
 
-app.use(cors({ orgin: process.env.FRONTEND_URL ?? "http://localhost:5173"}));
+app.use(cors());
 
 const supabase = createClient(
     process.env.SUPABASE_URL!,

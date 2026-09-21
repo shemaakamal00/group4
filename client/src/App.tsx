@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
-import HomePage from './pages/HomePage/HomePage'; 
+import HomePage from './pages/HomePage/HomePage';
 
+// TODO: Tillfällig deploy test, kommer tas bort
 export default function App() {
-    // TODO: Tillfällig deploy test, kommer tas bort
-    const [status, setStatus] = useState ('Testar backend');
+  const [status, setStatus] = useState('Testar backend...');
 
-    useEffect(() =>{
-        fetch (`${import.meta.env.VITE_API_URL}/api/health`)
-        .then ((r) => r.json())
-        .then((d) => setStatus(` ${d.message} (${d.levels} nivåer i DB)`))
-        .catch(() => setStatus('Kan inte nå backend'));
-    }, []);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/health`)
+      .then((r) => r.json())
+      .then((d) => setStatus(` Backend svarar (${d.levels} nivåer i DB)`))
+      .catch(() => setStatus(' Kunde inte nå backend'));
+  }, []);
+
   return (
-    <HomePage />
+    <>
+      <div style={{ padding: '8px', background: '#eee', fontSize: '14px' }}>
+        {status}
+      </div>
+      <HomePage />
+    </>
   );
 }
