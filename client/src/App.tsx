@@ -1,50 +1,7 @@
-import { useState } from "react";
+import HomePage from "./pages/HomePage/HomePage";
 
-//components
-import Modal from "../src/components/shared/modal"
-
-function App() {
-
-  //Modal-öppen/stängd-state
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  //Modal title
-  const placeholderTitle =" En placeholder-title"
-
-  return(
-    <main className="container">
-      <h1>KarriärKoll</h1>
-
-      <button type="button" className="btn btn--primary" onClick={() => setIsModalOpen(true)}>
-        Modal-testknapp
-      </button>
-
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={placeholderTitle} >
-
-        {/*HÄR används {children} från modal-mallen */}
-        <p>Innehåll per källa! Exempel:</p>
-        <br></br>
-
-        <section className="placeholder-content">
-            <h1>Registrera dig</h1>
-            <form>
-                <input placeholder="Förnamn"></input>
-                <br></br>
-                <input placeholder="Efternamn"></input>
-                <br></br>
-                <input placeholder="Email"></input>
-                <br></br>
-                <input placeholder="Lösenord"></input>
-                <br></br>
-                <input placeholder="Repetera lösenord"></input>
-                <br></br>
-                <button>Registrera</button>
-            </form>
-        </section>
-        
-
-      </Modal>
-    </main>
+export default function App() {
+  return (
+    <HomePage />
   );
-};
-
-export default App;
+}

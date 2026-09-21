@@ -2,20 +2,26 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
+    "@supabase/supabase-js": "^2",
+    "cors": "^2",
+    "dotenv": "^16",
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@types/cors": "^2",
     "@types/express": "^5.0.6",
     "tsx": "^4.23.13",
-    "typescript": "^7.0.2"
+    "typescript": "^5"
   }
 }
