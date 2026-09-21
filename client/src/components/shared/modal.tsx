@@ -45,7 +45,7 @@ function Modal({ isOpen, onClose, title, children }:ModalProps){
 
   return(
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby={title ? "modal-title" : undefined} onClick={(event) => event.stopPropagation()}>
         <div className="modal__head">
           {title && <h2 id="modal-title">{title}</h2>}
 
