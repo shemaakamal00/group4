@@ -1,4 +1,8 @@
-function Header({ isLoggedIn }) {
+type HeaderProps = {
+  isLoggedIn: boolean;
+};
+
+function Header({ isLoggedIn }: HeaderProps) {
   return (
     <header className="header">
       <h1>KarriärKoll</h1>
@@ -7,7 +11,11 @@ function Header({ isLoggedIn }) {
   );
 }
 
-function Login({ isLoggedIn }) {
+type LoginProps = {
+  isLoggedIn: boolean;
+};
+
+function Login({ isLoggedIn }: LoginProps) {
   if (isLoggedIn) {
     return (
       <div className="login">
