@@ -3,7 +3,7 @@ import { useEffect, type ReactNode } from "react";
 //Modal-types
 type ModalProps ={
   isOpen: boolean;
-  onClose: () => void; //onClose = ska innehålla en void-funktion (ska inte returnera något relevant). Måste INTE vara en arrow-function.
+  onClose: () => void; // Callback som anropas när modalen ska stängas.
   title?: string; //"?" = MÅSTE inte användas- alternativ prop.
   children: ReactNode; //ReactNode = TypeScript-typ, precis som t.ex "string": Innehållet måste vara sånt som React kan rendera
 };
