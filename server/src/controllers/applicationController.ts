@@ -39,11 +39,28 @@ export async function getOne(req: Request, res: Response) {
   res.json(data);
 }
 
+export async function getUsage(req: Request, res: Response) {
+  const { data, error } = await service.getUsage(req.user!.id);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+}
+
 export async function create(req: Request, res: Response) {
   const fields = pickApplicationFields(req.body);
   if (!fields.title) {
     return res.status(400).json({ error: "title krävs" });
   }
+
+  const { data: usage, error: usageError } = await service.getUsage(
+    req.user!.id,
+  );
+  if (usageError) return res.status(500).json({ error: usageError.message });
+  if (usage && usage.limit !== null && usage.used >= usage.limit) {
+    return res.status(403).json({
+      error: `Du har nått taket för ${usage.level_name} (${usage.limit} ansökningar). Uppgradera för att skapa fler.`,
+    });
+  }
+
   const { data, error } = await service.createApplication(req.user!.id, {
     ...fields,
     title: fields.title,
