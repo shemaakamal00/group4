@@ -1,0 +1,13 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/applications
+method: POST
+headers:
+  Authorization: "{{bearer_token_1boj}}"
+body:
+  type: json
+  content: |-
+    {
+        "company": "Ahlgrens Bilar"
+    }
+order: 1563952941463942
