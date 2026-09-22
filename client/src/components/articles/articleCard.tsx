@@ -1,7 +1,7 @@
 import type { Article } from "../../types/article";
 
 
-//Vad ska ArticleCard ta emot för props? 
+//Wrapper-type: Vad ska ArticleCard ta emot för props? 
 type ArticleCardProps = {
   article: Article;
 };
@@ -10,13 +10,13 @@ type ArticleCardProps = {
 function ArticleCard({article}: ArticleCardProps){
   return(
     <article>
-        
+
       <h2>{article.article_title}</h2>
 
       {article.article_description && (
         <p>{article.article_description}</p>
-
       )}
+
     </article>
   );
 };
