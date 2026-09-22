@@ -1,0 +1,7 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/premium-test
+method: GET
+headers:
+  Authorization: "{{bearer_token_1c66}}"
+order: 4501151090153096

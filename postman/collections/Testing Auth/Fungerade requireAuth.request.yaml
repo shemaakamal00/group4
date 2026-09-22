@@ -1,0 +1,7 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/me
+method: GET
+headers:
+  Authorization: "{{bearer_token_02au}}"
+order: 4431428815116745

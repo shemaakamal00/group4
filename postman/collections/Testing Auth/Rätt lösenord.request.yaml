@@ -1,0 +1,17 @@
+$kind: http-request
+description: ""
+url: https://hhktksaleepocopncbtb.supabase.co/auth/v1/token?grant_type=password
+method: POST
+headers:
+  apikey: sb_publishable_D8-notV9Rh9F7S0vaWvZwg_W3il3lXY
+  Content-Type: application/json
+queryParams:
+  grant_type: password
+body:
+  type: json
+  content: |-
+    {
+      "email": "shemaakamal00@hotmail.com",
+      "password": "Bosse123"
+    }
+order: 4404412125414325
