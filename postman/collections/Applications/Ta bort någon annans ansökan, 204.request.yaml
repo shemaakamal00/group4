@@ -1,0 +1,10 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/applications/35d95bc1-a5f3-4cbc-8f78-fd5a8b1eec68
+method: DELETE
+headers:
+  Authorization: "{{bearer_token_0xng}}"
+body:
+  type: json
+  content: ""
+order: 4483855228563757

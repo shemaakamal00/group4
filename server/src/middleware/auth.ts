@@ -1,10 +1,6 @@
-import type { Request, Response, NextFunction } from "express";
 import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!,
-);
+import { supabase } from "../services/supabase";
+import type { Request, Response, NextFunction } from "express";
 
 // Verifierar token och lägger användaren på req.user
 export async function requireAuth(

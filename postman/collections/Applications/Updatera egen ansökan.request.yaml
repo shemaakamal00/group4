@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/applications/f51ee58d-c84b-4986-ba9f-88129f2e7f28
+method: PATCH
+headers:
+  Authorization: "{{bearer_token_1boj}}"
+body:
+  type: json
+  content: |-
+    {
+        "application_status:id": 1,
+        "notes": "Fick svar"
+    }
+order: 4115601809674832

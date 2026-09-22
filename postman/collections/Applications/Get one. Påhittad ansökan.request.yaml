@@ -1,0 +1,10 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/applications/00000000-0000-0000-0000-000000000000
+method: GET
+headers:
+  Authorization: "{{bearer_token_0xng}}"
+body:
+  type: json
+  content: ""
+order: 3984393452196017
