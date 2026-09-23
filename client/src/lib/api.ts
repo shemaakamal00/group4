@@ -33,3 +33,27 @@ export async function apiFetch<T = unknown>(
   }
   return response.json() as Promise<T>;
 }
+
+export async function apiDownload(path: string): Promise<void> {
+  const authHeader = await getAuthHeader();
+  const response = await fetch(`${API_URL}${path}`, { headers: authHeader });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({}));
+    throw new Error(errorBody.error ?? `Download failed: ${response.status}`);
+  }
+
+  const disposition = response.headers.get("Content-Disposition") ?? "";
+  const match = /filename="?([^"]+)"?/.exec(disposition);
+  const filename = match?.[1] ?? "download";
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}

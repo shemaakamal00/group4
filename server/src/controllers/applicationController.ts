@@ -1,6 +1,7 @@
 import * as service from "../services/applicationService";
 import type { ApplicationInput } from "../types/application";
 import type { Request, Response } from "express";
+import PDFDocument from "pdfkit";
 
 function pickApplicationFields(body: any): Partial<ApplicationInput> {
   const {
@@ -94,4 +95,111 @@ export async function getStats(req: Request, res: Response) {
   const { data, error } = await service.getStats(req.user!.id);
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
+}
+
+export async function exportApplications(req: Request, res: Response) {
+  const format = String(req.query.format ?? "csv").toLowerCase();
+
+  const { data: usage, error: usageError } = await service.getUsage(
+    req.user!.id,
+  );
+  if (usageError || !usage)
+    return res.status(500).json({ error: usageError?.message });
+
+  const accessLevel = (usage as any).access_level ?? 1;
+  if (format === "csv" && accessLevel < 2) {
+    return res
+      .status(403)
+      .json({ error: "CSV-export kräver Plus eller Premium." });
+  }
+  if (format === "pdf" && accessLevel < 3) {
+    return res.status(403).json({ error: "PDF-export kräver Premium." });
+  }
+
+  const { data: apps, error } = await service.getApplicationsForExport(
+    req.user!.id,
+  );
+  if (error) return res.status(500).json({ error: error.message });
+
+  const rows = (apps ?? []).map((a: any) => ({
+    title: a.title ?? "",
+    company: a.company ?? "",
+    status: a.application_status?.status_name ?? "",
+    applied_at: a.applied_at ?? "",
+    response_date: a.response_date ?? "",
+    link: a.link ?? "",
+    notes: (a.notes ?? "").replace(/[\r\n]+/g, " "),
+  }));
+
+  const dateSuffix = new Date().toISOString().slice(0, 10);
+  const filename = `ansokningar-${dateSuffix}.${format}`;
+
+  if (format === "csv") {
+    const header = [
+      "Titel",
+      "Företag",
+      "Status",
+      "Ansökt",
+      "Svar",
+      "Länk",
+      "Anteckningar",
+    ];
+    const csvLines = [header.join(",")];
+    for (const r of rows) {
+      const escape = (v: string) => `"${v.replace(/"/g, '""')}"`;
+      csvLines.push(
+        [
+          r.title,
+          r.company,
+          r.status,
+          r.applied_at,
+          r.response_date,
+          r.link,
+          r.notes,
+        ]
+          .map(escape)
+          .join(","),
+      );
+    }
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    return res.send("\uFEFF" + csvLines.join("\n"));
+  }
+
+  if (format === "pdf") {
+    const doc = new PDFDocument({ margin: 50, size: "A4" });
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    doc.pipe(res);
+
+    doc.fontSize(18).text("Mina ansökningar", { align: "center" });
+    doc.moveDown();
+    doc
+      .fontSize(10)
+      .fillColor("#666")
+      .text(`Exporterad ${dateSuffix}`, { align: "center" });
+    doc.moveDown(1.5);
+
+    doc.fillColor("#000");
+    for (const r of rows) {
+      doc.fontSize(12).text(r.title, { continued: false });
+      if (r.company) doc.fontSize(10).fillColor("#555").text(r.company);
+      doc
+        .fontSize(9)
+        .fillColor("#333")
+        .text(
+          `Status: ${r.status}${r.applied_at ? "  ·  Ansökt: " + r.applied_at : ""}${r.response_date ? "  ·  Svar: " + r.response_date : ""}`,
+        );
+      if (r.notes) doc.fontSize(9).fillColor("#666").text(r.notes);
+      doc.moveDown(0.8);
+      doc.fillColor("#000");
+    }
+
+    doc.end();
+    return;
+  }
+
+  return res
+    .status(400)
+    .json({ error: "Okänt format. Använd 'csv' eller 'pdf'." });
 }

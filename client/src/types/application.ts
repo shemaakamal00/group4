@@ -17,6 +17,7 @@ export type ApplicationUsage = {
   used: number;
   limit: number | null;
   level_name: string;
+  access_level: number;
 };
 
 export type StatusCount = {

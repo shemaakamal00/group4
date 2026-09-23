@@ -9,3 +9,6 @@ variables:
   - key: bearer_token_11tb
     secret: true
     disabled: false
+  - key: bearer_token_0qdq
+    secret: true
+    disabled: false

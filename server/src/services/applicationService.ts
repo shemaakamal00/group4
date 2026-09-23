@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 import type { ApplicationInput } from "../types/application";
-import { error } from "node:console";
+import { access } from "node:fs";
 
 // Listar ansökningar
 export function listApplications(userId: string) {
@@ -67,7 +67,7 @@ export async function getUsage(userId: string) {
   // Hämtar nivåns detaljer (tak + namn)
   const { data: level, error: levelError } = await supabase
     .from("subscription_level")
-    .select("level_name, application_limit")
+    .select("level_name, application_limit, access_level")
     .eq("id", profile.level_id)
     .single();
 
@@ -86,6 +86,7 @@ export async function getUsage(userId: string) {
       used: userApps?.length ?? 0,
       limit: level.application_limit as number | null,
       level_name: level.level_name as string,
+      access_level: level.access_level as number,
     },
     error: null,
   };
@@ -192,4 +193,12 @@ export async function getStats(userId: string) {
   }
 
   return { data: result, error: null };
+}
+
+export function getApplicationsForExport(userId: string) {
+  return supabase
+    .from("application")
+    .select("*, application_status(status_name)")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
 }

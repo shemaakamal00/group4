@@ -8,7 +8,7 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import { apiFetch } from "../../lib/api";
+import { apiDownload, apiFetch } from "../../lib/api";
 import ApplicationForm from "./ApplicationForm";
 import Modal from "../../components/shared/modal";
 import type { Application, ApplicationUsage } from "../../types/application";
@@ -238,6 +238,16 @@ function ApplicationsPage() {
       </div>
     );
 
+  async function handleExport(format: "csv" | "pdf") {
+    try {
+      await apiDownload(`/api/applications/export?format=${format}`);
+    } catch (err) {
+      alert(
+        "Kunde inte exportera: " + (err instanceof Error ? err.message : ""),
+      );
+    }
+  }
+
   return (
     <section className="container applications-page">
       <div className="row between applications-page__head">
@@ -255,6 +265,24 @@ function ApplicationsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          {usage && usage.access_level >= 2 && (
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={() => handleExport("csv")}
+            >
+              ⬇ CSV
+            </button>
+          )}
+          {usage && usage.access_level >= 3 && (
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={() => handleExport("pdf")}
+            >
+              ⬇ PDF
+            </button>
+          )}
           <button
             type="button"
             className="btn btn--primary"
