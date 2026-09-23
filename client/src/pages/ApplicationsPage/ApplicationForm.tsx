@@ -5,7 +5,7 @@ import type { Application } from "../../types/application";
 type ApplicationFormProps = {
   application?: Application;
   onSaved: () => void;
-  onCancel: () => void;
+  onDeleted?: () => void;
 };
 
 const STATUS_OPTIONS = [
@@ -18,7 +18,7 @@ const STATUS_OPTIONS = [
 function ApplicationForm({
   application,
   onSaved,
-  onCancel,
+  onDeleted,
 }: ApplicationFormProps) {
   const isEdit = !!application;
 
@@ -36,6 +36,7 @@ function ApplicationForm({
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -74,6 +75,28 @@ function ApplicationForm({
       setError(err instanceof Error ? err.message : "Kunde inte spara ansökan");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDelete() {
+    if (!application) return;
+    const confirmed = window.confirm(
+      `Är du säker på att du vill radera ansökan "${application.title}"? Detta går inte att ångra.`,
+    );
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError(null);
+    try {
+      await apiFetch(`/api/applications/${application.id}`, {
+        method: "DELETE",
+      });
+      onDeleted?.();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Kunde inte radera ansökan",
+      );
+      setDeleting(false);
     }
   }
 
@@ -181,17 +204,25 @@ function ApplicationForm({
       {error && <p className="application-form__error">{error}</p>}
 
       <div className="application-form__actions">
-        <button
-          type="button"
-          className="btn btn--secondary"
-          onClick={onCancel}
-          disabled={saving}
-        >
-          Avbryt
-        </button>
-        <button type="submit" className="btn btn--primary" disabled={saving}>
-          {saving ? "Sparar…" : isEdit ? "Spara ändringar" : "Skapa ansökan"}
-        </button>
+        {isEdit && (
+          <button
+            type="button"
+            className="btn application-form__delete"
+            onClick={handleDelete}
+            disabled={saving || deleting}
+          >
+            {deleting ? "Raderar…" : "🗑 Radera"}
+          </button>
+        )}
+        <div className="application-form__actions-right">
+          <button
+            type="submit"
+            className="btn btn--primary"
+            disabled={saving || deleting}
+          >
+            {saving ? "Sparar…" : isEdit ? "Spara ändringar" : "Skapa ansökan"}
+          </button>
+        </div>
       </div>
     </form>
   );

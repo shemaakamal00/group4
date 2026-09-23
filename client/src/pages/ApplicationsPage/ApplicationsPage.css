@@ -1,0 +1,122 @@
+/* Ansökningar-sidan (list-vy + kanban) */
+
+.applications-page__head {
+  margin-bottom: var(--space-4);
+}
+
+.applications-page__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.applications-page__search {
+  width: 240px;
+}
+
+.applications-page__no-results {
+  padding: var(--space-3);
+  text-align: center;
+}
+
+/* Användningsindikator */
+.usage-banner {
+  margin-bottom: var(--space-3);
+}
+
+.usage-banner__text {
+  margin: 0;
+}
+
+.usage-banner__upgrade {
+  margin: 8px 0 0;
+  color: var(--rust);
+}
+
+/* Kanban-kolumner */
+.kanban-column__header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+
+.kanban-column__cards {
+  display: grid;
+  gap: var(--space-2);
+}
+
+/* Kort */
+.application-card {
+  cursor: pointer;
+}
+
+.application-card__company {
+  margin: 2px 0 0;
+}
+
+.application-card__date {
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: var(--fs-xs);
+}
+
+/* Ansökningsformulär (modal) */
+
+.application-form {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: 1fr 1fr;
+}
+
+.application-form .field:first-child,
+.application-form__notes,
+.application-form__error,
+.application-form__actions {
+  grid-column: 1 / -1;
+}
+
+.application-form__error {
+  padding: 8px 12px;
+  color: var(--status-rejected-fg);
+  background: var(--status-rejected-bg);
+  border-radius: var(--radius-sm);
+  margin: 0;
+}
+
+.application-form__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.application-form__actions-right {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.application-form__delete {
+  color: var(--status-rejected-fg);
+  background: transparent;
+  border-color: var(--status-rejected-fg);
+}
+
+.application-form__delete:hover:not(:disabled) {
+  color: var(--on-dark);
+  background: var(--status-rejected-fg);
+}
+
+/* Responsivt */
+
+@media (max-width: 640px) {
+  .applications-page__search {
+    width: 100%;
+  }
+
+  .application-form {
+    grid-template-columns: 1fr;
+  }
+}

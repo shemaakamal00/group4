@@ -1,0 +1,34 @@
+/* Dashboard-sidan */
+
+.dashboard-page__head {
+  margin-bottom: var(--space-4);
+}
+
+.dashboard-page__stats,
+.dashboard-page__chart,
+.dashboard-page__insights,
+.dashboard-page__locked {
+  margin-bottom: var(--space-3);
+}
+
+.dashboard-page__chart h3,
+.dashboard-page__locked h3 {
+  margin-bottom: var(--space-2);
+}
+
+.dashboard-page__locked {
+  text-align: center;
+}
+
+/* Recharts-anpassningar */
+.dashboard-page__chart-tick {
+  font-size: var(--fs-xs);
+  fill: var(--text-muted);
+}
+
+.dashboard-page__tooltip {
+  background: var(--surface) !important;
+  border: 0.5px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  font-size: var(--fs-sm);
+}

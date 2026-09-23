@@ -1,3 +1,4 @@
+import "./ApplicationsPage.css"
 import { apiFetch } from "../../lib/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ApplicationForm from "./ApplicationForm";
@@ -31,6 +32,7 @@ function ApplicationsPage() {
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState<Application | undefined>(undefined);
+  const [search, setSearch] = useState("");
 
   const loadAll = useCallback(async () => {
     try {
@@ -51,15 +53,25 @@ function ApplicationsPage() {
     loadAll();
   }, [loadAll]);
 
+  const filteredApplications = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return applications;
+    return applications.filter(
+      (app) =>
+        app.title.toLowerCase().includes(query) ||
+        (app.company?.toLowerCase() ?? "").includes(query),
+    );
+  }, [applications, search]);
+
   const applicationsByStatus = useMemo(() => {
     const grouped = new Map<number, Application[]>();
     for (const column of STATUS_COLUMNS) grouped.set(column.id, []);
-    for (const app of applications) {
+    for (const app of filteredApplications) {
       const list = grouped.get(app.application_status_id);
       if (list) list.push(app);
     }
     return grouped;
-  }, [applications]);
+  }, [filteredApplications]);
 
   const atLimit =
     usage !== null && usage.limit !== null && usage.used >= usage.limit;
@@ -109,9 +121,13 @@ function ApplicationsPage() {
           </p>
         </div>
         <div className="applications-page__actions">
-          <button type="button" className="btn btn--secondary">
-            🔍 Sök
-          </button>
+          <input
+            type="search"
+            className="input applications-page__search"
+            placeholder="🔍 Sök titel eller företag…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <button
             type="button"
             className="btn btn--primary"
@@ -142,6 +158,12 @@ function ApplicationsPage() {
             </p>
           )}
         </div>
+      )}
+
+      {search && filteredApplications.length === 0 && (
+        <p className="muted applications-page__no-results">
+          Inga ansökningar matchar "{search}".
+        </p>
       )}
 
       <div className="grid grid-4">
@@ -187,7 +209,7 @@ function ApplicationsPage() {
         <ApplicationForm
           application={editing}
           onSaved={handleSaved}
-          onCancel={closeForm}
+          onDeleted={handleSaved}
         />
       </Modal>
     </section>

@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { apiFetch } from "../../lib/api";
 import type { ApplicationStats } from "../../types/application";
+import "./DashboardPage.css";
 
 const CHART_MARGIN = { top: 12, right: 12, bottom: 0, left: -12 } as const;
 const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
