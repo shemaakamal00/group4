@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import ApplicationPage from "./pages/HomePage/ApplicationsPage/ApplicationsPage";
 import ArticlesPage from "./pages/ArticlesPage";
+import ArticlePage from "./pages/ArticlePage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -29,6 +30,11 @@ export default function App() {
           //</ProtectedRoute>
 
         }
+      />
+
+      <Route
+        path="/articles/:id"
+        element={<ArticlePage />}
       />
 
     </Routes>
