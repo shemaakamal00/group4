@@ -131,6 +131,68 @@
   cursor: grabbing;
 }
 
+/* Kombinera .pill och .kanban-column__header för högre specifitet */
+.pill.kanban-column__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-2);
+}
+
+.applications-page__actions .btn {
+  white-space: nowrap;
+}
+
+/* Export-meny (dropdown) */
+.export-menu {
+  position: relative;
+}
+
+.export-menu__trigger {
+  list-style: none;
+  cursor: pointer;
+}
+
+.export-menu__trigger::-webkit-details-marker {
+  display: none;
+}
+.export-menu__trigger::marker {
+  display: none;
+}
+
+.export-menu__items {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  padding: 4px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal);
+}
+
+.export-menu__item {
+  padding: 8px 12px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+}
+
+.export-menu__item:hover {
+  background: var(--surface-alt);
+}
 /* Responsivt */
 
 @media (max-width: 640px) {

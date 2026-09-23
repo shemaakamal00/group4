@@ -1,5 +1,4 @@
 /* Dashboard-sidan */
-
 .dashboard-page__head {
   margin-bottom: var(--space-4);
 }
@@ -31,4 +30,24 @@
   border: 0.5px solid var(--border) !important;
   border-radius: var(--radius-sm) !important;
   font-size: var(--fs-sm);
+}
+
+/* 5 kolumner istället för 4 */
+.dashboard-page__stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-2);
+}
+
+/* Fallback för mindre skärmar */
+@media (max-width: 900px) {
+  .dashboard-page__stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-page__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

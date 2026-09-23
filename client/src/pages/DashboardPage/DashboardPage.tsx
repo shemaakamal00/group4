@@ -86,7 +86,7 @@ function DashboardPage() {
       </div>
 
       {/* Nivå 1+: Räknare per status */}
-      <div className="grid grid-4 dashboard-page__stats">
+      <div className="dashboard-page__stats">
         <div className="stat">
           <p className="stat__label">Totalt</p>
           <p className="stat__value">{stats.total}</p>
@@ -124,6 +124,7 @@ function DashboardPage() {
                   dataKey="ansökningar"
                   fill="var(--orange)"
                   radius={BAR_RADIUS}
+                  maxBarSize={80}
                 />
               </BarChart>
             </ResponsiveContainer>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import {
   DndContext,
   PointerSensor,
@@ -113,6 +113,7 @@ function ApplicationsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState<Application | undefined>(undefined);
   const [search, setSearch] = useState("");
+  const exportMenuRef = useRef<HTMLDetailsElement>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -241,6 +242,7 @@ function ApplicationsPage() {
   async function handleExport(format: "csv" | "pdf") {
     try {
       await apiDownload(`/api/applications/export?format=${format}`);
+      if (exportMenuRef.current) exportMenuRef.current.open = false;
     } catch (err) {
       alert(
         "Kunde inte exportera: " + (err instanceof Error ? err.message : ""),
@@ -266,22 +268,29 @@ function ApplicationsPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
           {usage && usage.access_level >= 2 && (
-            <button
-              type="button"
-              className="btn btn--secondary"
-              onClick={() => handleExport("csv")}
-            >
-              ⬇ CSV
-            </button>
-          )}
-          {usage && usage.access_level >= 3 && (
-            <button
-              type="button"
-              className="btn btn--secondary"
-              onClick={() => handleExport("pdf")}
-            >
-              ⬇ PDF
-            </button>
+            <details className="export-menu" ref={exportMenuRef}>
+              <summary className="btn btn--secondary export-menu__trigger">
+                ⬇ Exportera
+              </summary>
+              <div className="export-menu__items">
+                <button
+                  type="button"
+                  className="export-menu__item"
+                  onClick={() => handleExport("csv")}
+                >
+                  📄 CSV
+                </button>
+                {usage.access_level >= 3 && (
+                  <button
+                    type="button"
+                    className="export-menu__item"
+                    onClick={() => handleExport("pdf")}
+                  >
+                    📕 PDF
+                  </button>
+                )}
+              </div>
+            </details>
           )}
           <button
             type="button"
