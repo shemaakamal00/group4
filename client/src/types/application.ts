@@ -14,7 +14,32 @@ export type Application = {
 };
 
 export type ApplicationUsage = {
-    used: number;
-    limit: number | null;
-    level_name: string;
+  used: number;
+  limit: number | null;
+  level_name: string;
+};
+
+export type StatusCount = {
+  status_id: number;
+  status_name: string;
+  count: number;
+};
+
+export type MonthlyCount = {
+  month: string;
+  count: number;
+};
+
+export type Insights = {
+  response_rate: number;
+  average_days_to_response: number | null;
+};
+
+export type ApplicationStats = {
+  level_name: string;
+  access_level: number;
+  total: number;
+  counts_by_status: StatusCount[];
+  applications_per_month?: MonthlyCount[];
+  insights?: Insights;
 };

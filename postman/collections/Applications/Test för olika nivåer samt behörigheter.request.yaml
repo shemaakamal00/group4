@@ -1,0 +1,7 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/applications/stats
+method: GET
+headers:
+  Authorization: "{{bearer_token_11tb}}"
+order: 4495646167469720

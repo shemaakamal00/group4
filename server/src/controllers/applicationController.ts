@@ -89,3 +89,9 @@ export async function remove(req: Request, res: Response) {
   if (error) return res.status(500).json({ error: error.message });
   res.status(204).send();
 }
+
+export async function getStats(req: Request, res: Response) {
+  const { data, error } = await service.getStats(req.user!.id);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+}

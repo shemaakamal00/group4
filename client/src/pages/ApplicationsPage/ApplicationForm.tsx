@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
-import { apiFetch } from "../../../lib/api";
-import type { Application } from "../../../types/application";
+import { apiFetch } from "../../lib/api";
+import type { Application } from "../../types/application";
 
 type ApplicationFormProps = {
   application?: Application;

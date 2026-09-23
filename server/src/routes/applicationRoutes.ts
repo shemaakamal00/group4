@@ -8,6 +8,7 @@ router.use(requireAuth);
 
 router.get("/", controller.list);
 router.get("/usage", controller.getUsage);
+router.get("/stats", controller.getStats);
 router.get("/:id", controller.getOne);
 router.post("/", controller.create);
 router.patch("/:id", controller.update);

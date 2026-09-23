@@ -1,8 +1,8 @@
-import { apiFetch } from "../../../lib/api";
+import { apiFetch } from "../../lib/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ApplicationForm from "./ApplicationForm";
-import Modal from "../../../components/shared/modal";
-import type { Application, ApplicationUsage } from "../../../types/application";
+import Modal from "../../components/shared/modal";
+import type { Application, ApplicationUsage } from "../../types/application";
 
 type StatusColumn = {
   id: number;
