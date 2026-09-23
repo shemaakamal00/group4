@@ -1,9 +1,18 @@
-import "./ApplicationsPage.css"
-import { apiFetch } from "../../lib/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  DndContext,
+  PointerSensor,
+  useDraggable,
+  useDroppable,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { apiFetch } from "../../lib/api";
 import ApplicationForm from "./ApplicationForm";
 import Modal from "../../components/shared/modal";
 import type { Application, ApplicationUsage } from "../../types/application";
+import "./ApplicationsPage.css";
 
 type StatusColumn = {
   id: number;
@@ -24,6 +33,77 @@ function formatShortDate(iso: string | null): string | null {
   return date.toLocaleDateString("sv-SE", { day: "numeric", month: "short" });
 }
 
+type DraggableCardProps = {
+  application: Application;
+  onClick: () => void;
+};
+
+function DraggableCard({ application, onClick }: DraggableCardProps) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: application.id,
+    });
+
+  const style = transform
+    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
+    : undefined;
+
+  return (
+    <article
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={`card application-card ${isDragging ? "application-card--dragging" : ""}`}
+      onClick={onClick}
+    >
+      <h3>{application.title}</h3>
+      {application.company && (
+        <p className="application-card__company muted">{application.company}</p>
+      )}
+      {formatShortDate(application.applied_at) && (
+        <p className="application-card__date faint">
+          📅 {formatShortDate(application.applied_at)}
+        </p>
+      )}
+    </article>
+  );
+}
+
+type DroppableColumnProps = {
+  column: StatusColumn;
+  items: Application[];
+  onCardClick: (app: Application) => void;
+};
+
+function DroppableColumn({ column, items, onCardClick }: DroppableColumnProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: `column-${column.id}`,
+    data: { statusId: column.id },
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`kanban-column ${isOver ? "kanban-column--over" : ""}`}
+    >
+      <div className={`pill ${column.pillClass} kanban-column__header`}>
+        <span>{column.name}</span>
+        <span>{items.length}</span>
+      </div>
+      <div className="kanban-column__cards">
+        {items.map((app) => (
+          <DraggableCard
+            key={app.id}
+            application={app}
+            onClick={() => onCardClick(app)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [usage, setUsage] = useState<ApplicationUsage | null>(null);
@@ -33,6 +113,12 @@ function ApplicationsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState<Application | undefined>(undefined);
   const [search, setSearch] = useState("");
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 5 },
+    }),
+  );
 
   const loadAll = useCallback(async () => {
     try {
@@ -96,6 +182,47 @@ function ApplicationsPage() {
     await loadAll();
   }
 
+  async function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over) return;
+
+    const applicationId = String(active.id);
+    const newStatusId = over.data.current?.statusId as number | undefined;
+    if (!newStatusId) return;
+
+    const app = applications.find((a) => a.id === applicationId);
+    if (!app || app.application_status_id === newStatusId) return;
+
+    const oldStatusId = app.application_status_id;
+
+    setApplications((prev) =>
+      prev.map((a) =>
+        a.id === applicationId
+          ? { ...a, application_status_id: newStatusId }
+          : a,
+      ),
+    );
+
+    try {
+      await apiFetch(`/api/applications/${applicationId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ application_status_id: newStatusId }),
+      });
+    } catch (err) {
+      setApplications((prev) =>
+        prev.map((a) =>
+          a.id === applicationId
+            ? { ...a, application_status_id: oldStatusId }
+            : a,
+        ),
+      );
+      alert(
+        "Kunde inte uppdatera status: " +
+          (err instanceof Error ? err.message : ""),
+      );
+    }
+  }
+
   if (loading)
     return (
       <div className="container">
@@ -117,7 +244,7 @@ function ApplicationsPage() {
         <div>
           <h1>Ansökningar</h1>
           <p className="subtitle">
-            Klicka på ett kort för att redigera eller lägg till nya.
+            Dra korten mellan kolumnerna eller klicka för att redigera.
           </p>
         </div>
         <div className="applications-page__actions">
@@ -166,40 +293,18 @@ function ApplicationsPage() {
         </p>
       )}
 
-      <div className="grid grid-4">
-        {STATUS_COLUMNS.map((column) => {
-          const items = applicationsByStatus.get(column.id) ?? [];
-          return (
-            <div key={column.id} className="kanban-column">
-              <div className={`pill ${column.pillClass} kanban-column__header`}>
-                <span>{column.name}</span>
-                <span>{items.length}</span>
-              </div>
-              <div className="kanban-column__cards">
-                {items.map((app) => (
-                  <article
-                    key={app.id}
-                    className="card application-card"
-                    onClick={() => openEditForm(app)}
-                  >
-                    <h3>{app.title}</h3>
-                    {app.company && (
-                      <p className="application-card__company muted">
-                        {app.company}
-                      </p>
-                    )}
-                    {formatShortDate(app.applied_at) && (
-                      <p className="application-card__date faint">
-                        📅 {formatShortDate(app.applied_at)}
-                      </p>
-                    )}
-                  </article>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        <div className="grid grid-4">
+          {STATUS_COLUMNS.map((column) => (
+            <DroppableColumn
+              key={column.id}
+              column={column}
+              items={applicationsByStatus.get(column.id) ?? []}
+              onCardClick={openEditForm}
+            />
+          ))}
+        </div>
+      </DndContext>
 
       <Modal
         isOpen={isFormOpen}
