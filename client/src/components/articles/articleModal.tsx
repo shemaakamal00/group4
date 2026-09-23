@@ -28,25 +28,24 @@ function ArticleModal({isOpen, onClose}: ArticleModalProps){
             required_subscription_level_id: requiredLevel,
         };
 
-        try{//Resultatet från fetch ska behandlas som :Article
-            const createdArticle = await apiFetch<Article>("/api/articles", {
-            method: "POST",
+        try{//Resultatet från fetch ska behandlas som en :Article
+            const createdArticle = await apiFetch<Article>('/api/articles', {
+            method: 'POST',
             body: JSON.stringify(articleData),
             });
 
-            console.log("Artikel skapad:", createdArticle);
+            console.log('Artikel skapad:', createdArticle);
 
             onClose();
         } catch (error) {
-            console.error("Kunde inte skapa artikel:", error);
+            console.error('Kunde inte skapa artikel:', error);
         };
     };
 
 
+    //OBS. Kommer alternativt lägga in beskrivande placeholders ist för labels. Stilfråga- diskutera med grupp
   return(
     <Modal isOpen={isOpen} onClose={onClose} title='Skapa artikel'>
-
-        
 
       <form onSubmit={handleSubmit}>
         <div>

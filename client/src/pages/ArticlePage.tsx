@@ -6,7 +6,7 @@ function ArticlePage() {
   return (
     <main className='container'>
       <h1>Artikel</h1>
-      <p>Artikelns ID är: {id}</p>
+      <p>Artikelns ID: {id}</p>
     </main>
   );
 };
