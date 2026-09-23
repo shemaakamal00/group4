@@ -1,8 +1,9 @@
-import type { Article } from "../types/article";
+import { useState } from "react";
+
 import ArticleCard from "../components/articles/articleCard";
+import ArticleModal from "../components/articles/articleModal";
 
-import React from 'react'
-
+import type { Article } from "../types/article";
 
 //TEST
 const testArticles: Article[] = [
@@ -29,13 +30,27 @@ const testArticles: Article[] = [
 ];
 
 function ArticlesPage(){
+
+  const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
+
   return(
-    <main className="container">
+    <main className='container'>
       <h1>Artiklar</h1>
 
       {testArticles.map((article) =>(
         <ArticleCard key={article.id} article={article} />
       ))}
+
+      <button type='button' 
+        className='btn btn--primary' 
+        onClick={() => setIsArticleModalOpen(true)}
+      >
+        Skapa artikel
+      </button>
+
+      <ArticleModal isOpen={isArticleModalOpen} 
+        onClose={() => setIsArticleModalOpen(false)}
+      />
 
     </main>
   );
