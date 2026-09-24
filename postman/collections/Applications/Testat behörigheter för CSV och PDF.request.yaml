@@ -1,0 +1,9 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/applications/export?format=csv
+method: GET
+headers:
+  Authorization: "{{bearer_token_0qdq}}"
+queryParams:
+  format: csv
+order: 4498372078569236

@@ -16,12 +16,14 @@
     "@supabase/supabase-js": "^2",
     "cors": "^2",
     "dotenv": "^16",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pdfkit": "^0.20.2"
   },
   "devDependencies": {
     "@types/cors": "^2",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.2",
+    "@types/pdfkit": "^0.17.6",
     "tsx": "^4.23.13",
     "typescript": "^5"
   }
