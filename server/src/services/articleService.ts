@@ -12,3 +12,10 @@ export function createArticle(userId: string, input: ArticleInput,){
     .select()
     .single();
 };
+
+export function getArticles() {
+  return supabase
+    .from("article")
+    .select("*")
+    .order("created_at", { ascending: false });
+}

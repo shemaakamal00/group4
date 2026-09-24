@@ -21,6 +21,18 @@ function pickArticleFields(body: any): ArticleInput{
   };
 }
 
+export async function list(req: Request, res: Response) {
+  const { data, error } = await service.getArticles();
+
+  if (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+
+  res.status(200).json(data);
+}
+
 export async function create(req: Request, res: Response){
   const fields = pickArticleFields(req.body);
 
