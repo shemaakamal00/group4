@@ -13,7 +13,7 @@ export function createArticle(userId: string, input: ArticleInput,){
     .single();
 };
 
-//Note: title_text hämtas INTE. Denna get används då ArticlesPage hämtar articleCard's, 
+//Note: article_text hämtas INTE. Denna get används då ArticlesPage hämtar articleCard's, 
 //och dessa ska INTE visa article_text.
 export function getArticles() {
   return supabase

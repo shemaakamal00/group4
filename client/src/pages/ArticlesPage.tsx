@@ -41,7 +41,7 @@ function ArticlesPage(){
         articles.map((article) =>(
           <ArticleCard key = {article.id} article={article} />
         ))
-      )};
+      )}
 
       <button type='button' 
         className='btn btn--primary' 
