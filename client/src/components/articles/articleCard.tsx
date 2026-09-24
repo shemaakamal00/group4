@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 
-import type { Article } from "../../types/article";
+import type { ArticleSummary } from "../../types/article";
 
 
 //Wrapper-type: Vad ska ArticleCard ta emot för props? 
 type ArticleCardProps = {
-  article: Article;
+  article: ArticleSummary;
 };
 
 //article_description renderas endast om det FINNS en article description- nullable. 
 function ArticleCard({article}: ArticleCardProps){
   return(
+
     <Link to={`/articles/${article.id}`}>
       <article>
 
@@ -22,6 +23,7 @@ function ArticleCard({article}: ArticleCardProps){
 
       </article>
     </Link>
+
   );
 };
 
