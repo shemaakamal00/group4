@@ -12,38 +12,47 @@ type ArticleModalProps = {
 
 function ArticleModal({isOpen, onClose}: ArticleModalProps){
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [articleText, setArticleText] = useState("");
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [articleText, setArticleText] = useState('');
   const [requiredLevel, setRequiredLevel] = useState(1);
 
+  const [errorMessage, setErrorMessage] = useState('');
 
-    async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>){
-        event.preventDefault();
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-        const articleData: CreateArticleData ={
-            article_title: title,
-            article_description: description || null,
-            article_text: articleText,
-            required_subscription_level_id: requiredLevel,
-        };
+    setErrorMessage('');
 
-        try{//Resultatet från fetch ska behandlas som en :Article
-            const createdArticle = await apiFetch<Article>('/api/articles', {
-            method: 'POST',
-            body: JSON.stringify(articleData),
-            });
-
-            console.log('Artikel skapad:', createdArticle);
-
-            onClose();
-        } catch (error) {
-            console.error('Kunde inte skapa artikel:', error);
-        };
+    const articleData: CreateArticleData = {
+      article_title: title,
+      article_description: description || null,
+      article_text: articleText,
+      required_subscription_level_id: requiredLevel,
     };
 
+    try{
+      const createdArticle = await apiFetch<Article>('/api/articles', {
+        method: 'POST',
+        body: JSON.stringify(articleData),
+      });
 
-    //OBS. Kommer alternativt lägga in beskrivande placeholders ist för labels. Stilfråga- diskutera med grupp
+      console.log('Artikel skapad:', createdArticle);
+
+      onClose();
+
+    }catch (error){
+      console.error('Kunde inte skapa artikel:', error);
+
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Kunde inte skapa artikeln'
+      );
+    };
+  };
+
+  //OBS. Kommer alternativt lägga in beskrivande placeholders ist för labels. Stilfråga- diskutera med grupp
   return(
     <Modal isOpen={isOpen} onClose={onClose} title='Skapa artikel'>
 
@@ -91,6 +100,8 @@ function ArticleModal({isOpen, onClose}: ArticleModalProps){
             <option value={3}>Premium</option>
           </select>
         </div>
+
+        {errorMessage && (<p className="form-error">{errorMessage}</p>)}
 
         <button type='submit' className='btn btn--primary'>
           Skapa artikel

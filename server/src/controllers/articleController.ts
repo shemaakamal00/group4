@@ -24,11 +24,15 @@ function pickArticleFields(body: any): ArticleInput{
 export async function create(req: Request, res: Response){
   const fields = pickArticleFields(req.body);
 
-  if (!fields.article_title || !fields.article_text){
+  if (!fields.article_title?.trim() || !fields.article_text?.trim()){
+
     return res.status(400).json({
-      error: 'article_title och article_text krävs',
+      error: 'Titel och artikeltext får inte vara tomma!',
     });
-  };
+  }
+
+  fields.article_title = fields.article_title.trim();
+  fields.article_text = fields.article_text.trim();
 
   const {data, error} = await service.createArticle(
     req.user!.id,

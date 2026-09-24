@@ -25,9 +25,9 @@ export default function App() {
       <Route 
         path="/articles" 
         element={
-          //<ProtectedRoute>
+          <ProtectedRoute>
             <ArticlesPage />
-          //</ProtectedRoute>
+          </ProtectedRoute>
 
         }
       />
