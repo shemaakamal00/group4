@@ -29,9 +29,15 @@ function Modal({ isOpen, onClose, title, children }:ModalProps){
 
         //registrerar funktionen hos webbläsaren(när ett "keydown"-event inträffar, kör..)
         document.addEventListener("keydown", handleKeyDown);
+
+        //Sparar overflow's tidigare state
+        const previousOverflow = document.body.style.overflow;
+        //"Låser" overflow så att t.ex scroll inte längre fungerar när modal isOpen
+        document.body.style.overflow = "hidden";
         
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
+            document.body.style.overflow = previousOverflow;
         };
 
 
