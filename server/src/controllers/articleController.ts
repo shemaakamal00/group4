@@ -33,6 +33,26 @@ export async function list(req: Request, res: Response) {
   res.status(200).json(data);
 }
 
+export async function getById(req: Request, res: Response){
+  const {id} = req.params;
+
+  if (typeof id !== 'string'){
+    return res.status(400).json({
+      error: 'Ogiltigt artikel-ID',
+    });
+  };
+
+  const {data, error} = await service.getArticleById(id);
+
+  if (error){
+    return res.status(404).json({
+      error: 'Artikeln kunde inte hittas',
+    });
+  };
+
+  res.status(200).json(data);
+};
+
 export async function create(req: Request, res: Response){
   const fields = pickArticleFields(req.body);
 

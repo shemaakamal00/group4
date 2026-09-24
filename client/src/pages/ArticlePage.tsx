@@ -1,12 +1,53 @@
+import {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 
-function ArticlePage() {
-  const {id} = useParams();
+import {apiFetch} from "../lib/api";
 
-  return (
-    <main className='container'>
-      <h1>Artikel</h1>
-      <p>Artikelns ID: {id}</p>
+import type {Article} from "../types/article";
+
+function ArticlePage() {
+
+  const {id} = useParams();
+  const [article, setArticle] = useState <Article | null> (null);
+
+  useEffect(() => {
+    async function loadArticle(){
+      if (!id) {
+        return;
+      }
+
+      try{
+        const data = await apiFetch<Article>(`/api/articles/${id}`);
+        setArticle(data);
+
+      } catch (error) {
+        console.error('Kunde inte hämta artikeln:', error);
+
+      }
+    };
+
+    loadArticle();
+  }, [id]);
+
+  if (!article){
+    return (
+      <main className='container'>
+        <p>Laddar artikeln...</p>
+      </main>
+    );
+  };
+
+  return(
+    <main className="container">
+      <article>
+        <h1>{article.article_title}</h1>
+
+        {article.article_description && (
+          <p>{article.article_description}</p>
+        )}
+
+        <p>{article.article_text}</p>
+      </article>
     </main>
   );
 };

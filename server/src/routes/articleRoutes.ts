@@ -10,6 +10,12 @@ router.get(
   controller.list,
 );
 
+router.get(
+  "/:id",
+  requireAuth,
+  controller.getById,
+);
+
 //Liten adminskydd
 router.post(
   '/',

@@ -19,3 +19,11 @@ export function getArticles() {
     .select("*")
     .order("created_at", { ascending: false });
 }
+
+export function getArticleById(id: string){
+  return supabase
+    .from("article")
+    .select("*")
+    .eq("id", id)//Behåller bara raden där kolumnen "id" = värdet i variabeln 'id'
+    .single();
+}
