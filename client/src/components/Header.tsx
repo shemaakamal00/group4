@@ -1,31 +1,43 @@
 type HeaderProps = {
   isLoggedIn: boolean;
+  onLoginClick: () => void;
+  onGetStartedClick: () => void;
+  onLogoutClick: () => void;
 };
 
-function Header({ isLoggedIn }: HeaderProps) {
+function Header({ isLoggedIn, onLoginClick, onGetStartedClick, onLogoutClick }: HeaderProps) {
   return (
     <header className="header">
       <h1>KarriärKoll</h1>
-      <Login isLoggedIn={isLoggedIn} />
+      <Login
+        isLoggedIn={isLoggedIn}
+        onLoginClick={onLoginClick}
+        onGetStartedClick={onGetStartedClick}
+        onLogoutClick={onLogoutClick}
+      />
     </header>
   );
 }
 
 type LoginProps = {
   isLoggedIn: boolean;
+  onLoginClick: () => void;
+  onGetStartedClick: () => void;
+  onLogoutClick: () => void;
 };
 
-function Login({ isLoggedIn }: LoginProps) {
+function Login({ isLoggedIn, onLoginClick, onGetStartedClick, onLogoutClick }: LoginProps) {
   if (isLoggedIn) {
     return (
       <div className="login">
-        <a href="/logout">Logga ut</a>
+        <button type="button" onClick={onLogoutClick}>Logga ut</button>
       </div>
     );
   } else {
     return (
       <div className="login">
-        <a href="/login">Logga in</a>
+        <button type="button" onClick={onLoginClick}>Logga in</button>
+        <button type="button" onClick={onGetStartedClick}>Kom igång</button>
       </div>
     );
   }

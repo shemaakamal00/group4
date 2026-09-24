@@ -10,7 +10,7 @@ router.get(
   controller.list,
 );
 
-//Liten route/adminskydd
+//Liten adminskydd
 router.post(
   '/',
   requireAuth,

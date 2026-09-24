@@ -1,12 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 
 //Pages
+
+import ApplicationPage from "./pages/ApplicationsPage/ApplicationsPage";
 import HomePage from "./pages/HomePage/HomePage";
-import ApplicationPage from "./pages/HomePage/ApplicationsPage/ApplicationsPage";
 import ArticlesPage from "./pages/ArticlesPage";
 import ArticlePage from "./pages/ArticlePage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardPage from "./pages/DashboardPage/DashboardPage";
 
 export default function App() {
   return (
@@ -22,6 +24,7 @@ export default function App() {
         }
       />
 
+
       <Route 
         path="/articles" 
         element={
@@ -34,9 +37,21 @@ export default function App() {
 
       <Route
         path="/articles/:id"
-        element={<ArticlePage />}
+        element={
+          <ProtectedRoute>
+            <ArticlePage />
+          </ProtectedRoute>
+        }
       />
 
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
