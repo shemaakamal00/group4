@@ -1,0 +1,21 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/goals
+method: POST
+headers:
+  Authorization: "{{bearer_token_0pst}}"
+body:
+  type: json
+  content: |-
+    
+    {"goal_name": "Lära mig Trello", 
+    "goal_description": "På två månader", 
+    "criteria": [{"criteria_name": "Förstå hooks", 
+    "is_done": false
+    }, 
+
+    {"criteria_name": 
+    "Bygga app", 
+    "is_done": false}
+    ]}
+order: 4474795772779429

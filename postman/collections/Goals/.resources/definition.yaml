@@ -1,0 +1,5 @@
+$kind: collection
+variables:
+  - key: bearer_token_0pst
+    secret: true
+    disabled: false

@@ -1,0 +1,13 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/goals
+method: POST
+headers:
+  Authorization: "{{bearer_token_0pst}}"
+body:
+  type: json
+  content: |-
+    {"goal_name": "Test", 
+    "criteria": []
+    }
+order: 1957739117509397
