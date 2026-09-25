@@ -4,13 +4,15 @@ import type { GoalInput } from "../types/goal";
 
 function pickGoalFields(body: any): GoalInput {
   return {
-    goal_name: body.goal_name ?? "",
-    goal_description: body.goal_description ?? null,
+    goal_name: typeof body.goal_name === "string" ? body.goal_name : "",
+    goal_description:
+      typeof body.goal_description === "string" ? body.goal_description : null,
     criteria: Array.isArray(body.criteria)
       ? body.criteria
           .map((c: any) => ({
-            criteria_name: String(c.criteria_name ?? "").trim(),
-            is_done: Boolean(c.is_done),
+            criteria_name:
+              typeof c.criteria_name === "string" ? c.criteria_name.trim() : "",
+            is_done: c.is_done === true,
           }))
           .filter((c: any) => c.criteria_name.length > 0)
       : [],

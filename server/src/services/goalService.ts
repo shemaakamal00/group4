@@ -48,7 +48,11 @@ export async function createGoal(userId: string, input: GoalInput) {
     }
   }
 
-  return { data: goal, error: null };
+  return await supabase
+    .from("goal")
+    .select("*, goal_criteria(*)")
+    .eq("id", goal.id)
+    .single();
 }
 
 export async function updateGoal(userId: string, id: string, input: GoalInput) {
@@ -82,7 +86,11 @@ export async function updateGoal(userId: string, id: string, input: GoalInput) {
       .insert(rows);
     if (insertError) return { data: null, error: insertError };
   }
-  return { data: goal, error: null };
+  return await supabase
+    .from("goal")
+    .select("*, goal_criteria(*)")
+    .eq("id", goal.id)
+    .single();
 }
 
 export async function getGoalUsage(userId: string) {
