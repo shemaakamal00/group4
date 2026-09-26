@@ -29,7 +29,7 @@ function ArticlesPage(){
     };
 
     loadArticles();
-  }, []);
+  }, [articles]);
 
   return(
     <main className='container'>
@@ -37,17 +37,22 @@ function ArticlesPage(){
 
       {articles.length === 0 ?(<p>Det finns inga tillgängliga artiklar än!</p>):
       (
-        articles.map((article) =>(
-          <ArticleCard key = {article.id} article={article} 
-            onUpgrade={()=>{
-              console.log('Öppna uppgradering för:', article.id);
-            }} 
-          />
-        ))
-      )};
+        <div className='article-grid'>
+          {articles.map((article) =>(
+
+            <ArticleCard key = {article.id} article={article} 
+              onUpgrade={()=>{
+                console.log('Öppna uppgradering för:', article.id);
+              }} 
+            />
+
+          ))}
+        </div>
+      )}
+      
 
       <button type='button' 
-        className='btn btn--primary' 
+        className='btn btn--primary create-article-btn' 
         onClick={() => setIsArticleModalOpen(true)}
       >
         Skapa artikel

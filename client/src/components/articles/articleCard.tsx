@@ -14,11 +14,15 @@ function ArticleCard({article, onUpgrade}: ArticleCardProps){
 
   if(article.is_locked){
     return(
+
       <article className='article-card article-card--locked'>
 
-        <h2>{article.article_title}</h2>
+        <div className='article-card_content'>
 
-        {article.article_description && (<p>{article.article_description}</p>)}
+          <h2>{article.article_title}</h2>
+          {article.article_description && (<p>{article.article_description}</p>)}
+
+        </div>
 
         <div className='article-card_locked-content'>
 
@@ -38,7 +42,7 @@ function ArticleCard({article, onUpgrade}: ArticleCardProps){
   return(
 
     <Link to={`/articles/${article.id}`} className = 'article-card_link'>
-      <article>
+      <article className='card article-card'>
 
         <h2>{article.article_title}</h2>
 
