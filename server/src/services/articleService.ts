@@ -14,7 +14,7 @@ export function createArticle(userId: string, input: ArticleInput,){
 };
 
 //Note: article_text hämtas INTE. Denna get används då ArticlesPage hämtar articleCard's, 
-//och dessa ska INTE visa article_text.
+//och dessa ska INTE visa article_text. Hämtar även relaterad required subscription lvl.
 export function getArticles() {
   return supabase
     .from('article')
@@ -25,15 +25,25 @@ export function getArticles() {
       required_subscription_level_id,
       created_by,
       created_at,
-      updated_at
-      `)
+      updated_at,
+      subscription_level:required_subscription_level_id (
+        level_name,
+        access_level
+      )
+    `)
     .order('created_at', { ascending: false });
 }
 
 export function getArticleById(id: string){
   return supabase
     .from('article')
-    .select('*')
-    .eq('id', id)//Behåller bara raden där kolumnen "id" = värdet i variabeln 'id'
+    .select(`
+      *,
+      subscription_level:required_subscription_level_id (
+        level_name,
+        access_level
+      )
+    `)
+    .eq('id', id)
     .single();
-}
+};

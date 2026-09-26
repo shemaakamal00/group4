@@ -21,22 +21,41 @@ function pickArticleFields(body: any): ArticleInput{
   };
 }
 
-export async function list(req: Request, res: Response) {
-  const { data, error } = await service.getArticles();
+export async function list(req: Request, res: Response){
+  const {data, error} = await service.getArticles();
 
-  if (error) {
+  if (error){
     return res.status(500).json({
       error: error.message,
     });
   }
 
-  res.status(200).json(data);
-}
+  const articles = data.map((article) =>{
+    const subscriptionLevel = Array.isArray(article.subscription_level)
+      ? article.subscription_level[0]
+      : article.subscription_level;
+
+    const requiredAccessLevel = subscriptionLevel?.access_level;
+
+    //Fail-closed även här (..=== undefined)
+    return{
+      ...article,
+      is_locked:
+      requiredAccessLevel === undefined ||
+      req.user!.acces_level < requiredAccessLevel,
+    };
+  });
+
+  res.status(200).json(articles);
+};
+
+
 
 export async function getById(req: Request, res: Response){
+
   const {id} = req.params;
 
-  if (typeof id !== 'string'){
+  if (typeof id !== 'string') {
     return res.status(400).json({
       error: 'Ogiltigt artikel-ID',
     });
@@ -44,11 +63,23 @@ export async function getById(req: Request, res: Response){
 
   const {data, error} = await service.getArticleById(id);
 
-  if (error){
+  if (error || !data){
     return res.status(404).json({
       error: 'Artikeln kunde inte hittas',
     });
   };
+
+  const requiredAccessLevel = data.subscription_level?.access_level;
+
+  if (//hård säkerhet på undefined, ifall db inte ger oss access_level av nån anledning
+    requiredAccessLevel === undefined ||
+    req.user!.acces_level < requiredAccessLevel
+  ){
+    return res.status(403).json({
+      error: 'Din prenumerationsnivå räcker inte för den här artikeln',
+      requiredLevel: requiredAccessLevel,
+    });
+  }
 
   res.status(200).json(data);
 };

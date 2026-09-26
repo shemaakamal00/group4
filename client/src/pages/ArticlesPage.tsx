@@ -35,13 +35,16 @@ function ArticlesPage(){
     <main className='container'>
       <h1>Artiklar</h1>
 
-      {articles.length === 0 ?(
-        <p>Det finns inga tillgängliga artiklar än!</p>
-      ):(
+      {articles.length === 0 ?(<p>Det finns inga tillgängliga artiklar än!</p>):
+      (
         articles.map((article) =>(
-          <ArticleCard key = {article.id} article={article} />
+          <ArticleCard key = {article.id} article={article} 
+            onUpgrade={()=>{
+              console.log('Öppna uppgradering för:', article.id);
+            }} 
+          />
         ))
-      )}
+      )};
 
       <button type='button' 
         className='btn btn--primary' 

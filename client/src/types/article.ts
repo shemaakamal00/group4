@@ -24,4 +24,12 @@ export type ArticleSummary = {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+
+  subscription_level: {
+    level_name: string;
+    access_level: number;
+  };
+
+  is_locked: boolean;
+  
 };
