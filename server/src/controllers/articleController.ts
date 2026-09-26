@@ -110,3 +110,59 @@ export async function create(req: Request, res: Response){
 
   res.status(201).json(data);
 };
+
+export async function update(req: Request, res: Response) {
+  const { id } = req.params;
+
+  if (typeof id !== "string") {
+    return res.status(400).json({
+      error: "Ogiltigt artikel-ID",
+    });
+  }
+
+  const fields = pickArticleFields(req.body);
+
+  if (!fields.article_title?.trim() || !fields.article_text?.trim()) {
+    return res.status(400).json({
+      error: "Titel och artikeltext får inte vara tomma!",
+    });
+  }
+
+  fields.article_title = fields.article_title.trim();
+  fields.article_text = fields.article_text.trim();
+
+  const { data, error } = await service.updateArticle(
+    id,
+    fields,
+  );
+
+  if (error || !data) {
+    return res.status(404).json({
+      error: "Artikeln kunde inte uppdateras",
+    });
+  }
+
+  res.status(200).json(data);
+}
+
+
+
+export async function remove(req: Request, res: Response){
+  const { id } = req.params;
+
+  if (typeof id !== 'string') {
+    return res.status(400).json({
+      error: 'Ogiltigt artikel-ID',
+    });
+  }
+
+  const { error } = await service.deleteArticle(id);
+
+  if (error) {
+    return res.status(500).json({
+      error: 'Artikeln kunde inte tas bort',
+    });
+  }
+
+  res.status(204).send();
+}

@@ -47,3 +47,22 @@ export function getArticleById(id: string){
     .eq('id', id)
     .single();
 };
+
+export function updateArticle(
+  id: string,
+  input: ArticleInput,
+){
+  return supabase
+    .from('article')
+    .update(input)
+    .eq('id', id)
+    .select()
+    .single();
+}
+
+export function deleteArticle(id: string){
+  return supabase
+    .from('article')
+    .delete()
+    .eq('id', id);
+}

@@ -27,5 +27,6 @@ app.get("/api/health", async (_req, res) => {
 app.use("/api/applications", applicationRoutes);
 app.use("/api/articles", articleRoutes);
 
+
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => console.log(`Server på port ${port}`));

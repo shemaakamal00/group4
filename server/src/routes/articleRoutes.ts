@@ -24,5 +24,19 @@ router.post(
   controller.create,
 );
 
+router.patch(
+  "/:id",
+  requireAuth,
+  requireAdmin,
+  controller.update,
+);
+
+router.delete(
+  "/:id",
+  requireAuth,
+  requireAdmin,
+  controller.remove,
+);
+
 
 export default router;
