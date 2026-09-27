@@ -377,19 +377,33 @@
 }
 
 .modal {
-  width: 100%;
-  max-width: 420px;
+  width: min(680px, 100%);
+  max-height: calc(100vh - 40px);
   padding: 22px 24px;
+  overflow-y: auto;
+
   background: var(--bg);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-modal);
 }
 
-.modal__head {
+.modal_head {
+  margin-bottom: 18px;
+}
+
+.modal_body {
+  min-width: 0;
+}
+
+.modal_footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
+  justify-content: flex-end;
+  gap: var(--space-2);
+
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 0.5px solid var(--divider);
 }
 
 /* Händelse-etikett i kalender (om vi hinner) */
@@ -430,12 +444,13 @@
 /* Artikelkort */
 .article-card {
   position: relative;
-  min-height: 180px;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-  align-items: center;
-  text-align:center;
+}
+
+.article-card_edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
 }
 
 .article-card_link {

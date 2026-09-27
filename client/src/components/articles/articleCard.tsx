@@ -7,15 +7,22 @@ import type { ArticleSummary } from "../../types/article";
 type ArticleCardProps = {
   article: ArticleSummary;
   onUpgrade: ()=> void;
+  onEdit?: () => void;
 };
 
 //article_description renderas endast om det FINNS en article description- nullable. 
-function ArticleCard({article, onUpgrade}: ArticleCardProps){
+function ArticleCard({article, onUpgrade, onEdit}: ArticleCardProps){
 
   if(article.is_locked){
     return(
 
       <article className='article-card article-card--locked'>
+
+      {onEdit &&(
+          <button type='button' className='article-card_edit' onClick={onEdit}>
+            Redigera
+          </button>
+        )}
 
         <div className='article-card_content'>
 
@@ -40,19 +47,21 @@ function ArticleCard({article, onUpgrade}: ArticleCardProps){
   };
 
   return(
+    <article className='card article-card'>
 
-    <Link to={`/articles/${article.id}`} className = 'article-card_link'>
-      <article className='card article-card'>
+      {onEdit &&(
+        <button type='button' className='article-card_edit' onClick={onEdit}>
+          Redigera
+        </button>
+      )}
 
+      <Link to={`/articles/${article.id}`} className='article-card_link'>
         <h2>{article.article_title}</h2>
 
-        {article.article_description && (
-          <p>{article.article_description}</p>
-        )}
+        {article.article_description && (<p>{article.article_description}</p>)}
+      </Link>
 
-      </article>
-    </Link>
-
+    </article>
   );
 };
 

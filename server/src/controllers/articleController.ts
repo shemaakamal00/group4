@@ -72,9 +72,10 @@ export async function getById(req: Request, res: Response){
   const requiredAccessLevel = data.subscription_level?.access_level;
 
   if (//hård säkerhet på undefined, ifall db inte ger oss access_level av nån anledning
+    req.user!.role !== 'admin' && (
     requiredAccessLevel === undefined ||
     req.user!.acces_level < requiredAccessLevel
-  ){
+  )){
     return res.status(403).json({
       error: 'Din prenumerationsnivå räcker inte för den här artikeln',
       requiredLevel: requiredAccessLevel,

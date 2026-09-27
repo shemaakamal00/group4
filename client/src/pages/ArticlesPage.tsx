@@ -4,33 +4,47 @@ import { apiFetch } from "../lib/api";
 import ArticleCard from "../components/articles/articleCard";
 import ArticleModal from "../components/articles/articleModal";
 
-import type { ArticleSummary } from "../types/article";
+import type { Article, ArticleSummary } from "../types/article";
 
 
 
 function ArticlesPage(){
 
   const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState <Article |null>(null);
 
   //innehåller en !array av Article!
   const [articles, setArticles] = useState<ArticleSummary[]> ([]);
 
 
-  useEffect(() =>{
-    async function loadArticles(){
-      try{
-        const data = await apiFetch<ArticleSummary[]>('/api/articles');
-        setArticles(data);
+  async function loadArticles() {
+    try{
+      const data = await apiFetch<ArticleSummary[]>('/api/articles');
+      setArticles(data);
+    } catch (error) {
+      console.error('Kunde inte hämta artiklar:', error);
+    }
+  }
 
-      }catch (error){
-        console.error('Kunde inte hämta artiklar:', error);
+  async function handleEditArticle(articleId: string) {
+  try {
+    const article = await apiFetch<Article>(
+      `/api/articles/${articleId}`
+    );
 
-      };
-    };
+    setSelectedArticle(article);
+    setIsArticleModalOpen(true);
+  } catch (error) {
+    console.error('Kunde inte hämta artikeln för redigering:', error);
+  }
+}
 
+  useEffect(() => {
     loadArticles();
-  }, [articles]);
+  }, []);
 
+  
+  {/* TODO: Skicka ENDAST onEdit för admins */}
   return(
     <main className='container'>
       <h1>Artiklar</h1>
@@ -44,6 +58,9 @@ function ArticlesPage(){
               onUpgrade={()=>{
                 console.log('Öppna uppgradering för:', article.id);
               }} 
+
+              
+              onEdit={() => handleEditArticle(article.id)}
             />
 
           ))}
@@ -53,13 +70,15 @@ function ArticlesPage(){
 
       <button type='button' 
         className='btn btn--primary create-article-btn' 
-        onClick={() => setIsArticleModalOpen(true)}
+        onClick={() => {setSelectedArticle(null); setIsArticleModalOpen(true);}}
       >
         Skapa artikel
       </button>
 
       <ArticleModal isOpen={isArticleModalOpen} 
         onClose={() => setIsArticleModalOpen(false)}
+        onSaved={loadArticles}
+        article={selectedArticle}
       />
 
     </main>
