@@ -7,8 +7,11 @@ type HeaderProps = {
 
 function Header({ isLoggedIn, onLoginClick, onGetStartedClick, onLogoutClick }: HeaderProps) {
   return (
-    <header className="header">
-      <h1>KarriärKoll</h1>
+    <header className="navbar">
+      <div className="brand">
+        <span className="brand__logo">K</span>
+        <span className="brand__name">KarriärKoll</span>
+      </div>
       <Login
         isLoggedIn={isLoggedIn}
         onLoginClick={onLoginClick}
@@ -29,15 +32,25 @@ type LoginProps = {
 function Login({ isLoggedIn, onLoginClick, onGetStartedClick, onLogoutClick }: LoginProps) {
   if (isLoggedIn) {
     return (
-      <div className="login">
-        <button type="button" onClick={onLogoutClick}>Logga ut</button>
+      <div className="nav-links">
+        <button type="button" className="btn btn--secondary" onClick={onLogoutClick}>
+          Logga ut
+        </button>
       </div>
     );
   } else {
     return (
-      <div className="login">
-        <button type="button" onClick={onLoginClick}>Logga in</button>
-        <button type="button" onClick={onGetStartedClick}>Kom igång</button>
+      <div className="nav-links">
+        <button type="button" className="nav-link" onClick={onLoginClick}>
+          Logga in
+        </button>
+        <button
+          type="button"
+          className="btn btn--primary btn--pill"
+          onClick={onGetStartedClick}
+        >
+          Kom igång
+        </button>
       </div>
     );
   }
