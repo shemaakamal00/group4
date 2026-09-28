@@ -9,6 +9,7 @@ import ArticlePage from "./pages/ArticlePage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import GoalsPage from "./pages/GoalsPage/GoalsPage";
 
 export default function App() {
   return (
@@ -49,6 +50,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/goals"
+        element={
+          <ProtectedRoute>
+            <GoalsPage />
           </ProtectedRoute>
         }
       />

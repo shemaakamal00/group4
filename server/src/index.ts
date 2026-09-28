@@ -1,8 +1,8 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
+import goalRoutes from "./routes/goalRoutes";
 
-import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./services/supabase";
 
 //Routes
@@ -26,7 +26,7 @@ app.get("/api/health", async (_req, res) => {
 
 app.use("/api/applications", applicationRoutes);
 app.use("/api/articles", articleRoutes);
-
+app.use("/api/goals", goalRoutes);
 
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => console.log(`Server på port ${port}`));

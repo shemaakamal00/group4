@@ -1,0 +1,10 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/goals/715b17b0-e82b-4482-995f-e34bd5448425
+method: DELETE
+headers:
+  Authorization: "{{bearer_token_0pst}}"
+body:
+  type: json
+  content: ""
+order: 4480896445419248
