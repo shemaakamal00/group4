@@ -1,0 +1,136 @@
+/* Mål-sidan */
+
+.goals-page__head {
+  margin-bottom: var(--space-4);
+}
+
+.goals-page__empty,
+.goals-page__locked {
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.goals-page__locked h3 {
+  margin-bottom: var(--space-2);
+}
+
+.goals-page__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+/* Målkort */
+.goal-card {
+  cursor: pointer;
+}
+
+.goal-card__description {
+  margin: 4px 0 var(--space-2);
+}
+
+.goal-card__progress {
+  margin-top: var(--space-2);
+}
+
+.goal-card__progress-label {
+  margin: 6px 0 0;
+  font-size: var(--fs-xs);
+}
+
+/* Målformulär (modal)*/
+
+.goal-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.goal-form__criteria {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.goal-form__criteria-empty {
+  margin: 0;
+  font-size: var(--fs-xs);
+}
+
+.goal-form__criterion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.goal-form__criterion-toggle {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--rust);
+  flex-shrink: 0;
+}
+
+.goal-form__criterion-input {
+  flex: 1;
+}
+
+.goal-form__criterion-remove {
+  padding: 6px 10px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.goal-form__criterion-remove:hover {
+  color: var(--status-rejected-fg);
+  background: var(--status-rejected-bg);
+}
+
+.goal-form__add-criterion {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.goal-form__error {
+  padding: 8px 12px;
+  color: var(--status-rejected-fg);
+  background: var(--status-rejected-bg);
+  border-radius: var(--radius-sm);
+  margin: 0;
+}
+
+.goal-form__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.goal-form__actions-right {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.goal-form__delete {
+  color: var(--status-rejected-fg);
+  background: transparent;
+  border-color: var(--status-rejected-fg);
+}
+
+.goal-form__delete:hover:not(:disabled) {
+  color: var(--on-dark);
+  background: var(--status-rejected-fg);
+}
+
+/* Responsivt */
+@media (max-width: 640px) {
+  .goals-page__list {
+    grid-template-columns: 1fr;
+  }
+}
