@@ -1,10 +1,13 @@
 import "dotenv/config";
-import { createClient } from "@supabase/supabase-js";
-import { supabase } from "./services/supabase";
-import applicationRoutes from "./routes/applicationRoutes";
 import cors from "cors";
 import express from "express";
 import goalRoutes from "./routes/goalRoutes";
+
+import { supabase } from "./services/supabase";
+
+//Routes
+import applicationRoutes from "./routes/applicationRoutes";
+import articleRoutes from "./routes/articleRoutes";
 
 const app = express();
 app.use(express.json());
@@ -22,6 +25,7 @@ app.get("/api/health", async (_req, res) => {
 });
 
 app.use("/api/applications", applicationRoutes);
+app.use("/api/articles", articleRoutes);
 app.use("/api/goals", goalRoutes);
 
 const port = process.env.PORT ?? 3000;

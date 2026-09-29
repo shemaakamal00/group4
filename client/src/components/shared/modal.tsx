@@ -9,7 +9,7 @@ type ModalProps ={
 };
 
 //Modal-komponenten. Se ** för annat sätt att logiskt skriva hur "function Modal"-raden kan skrivas
-function Modal({ isOpen, onClose, title, children }:ModalProps){
+function Modal({ isOpen, onClose, title, children}:ModalProps){
 
 
     //Stäng modal med ESC-keydown event
@@ -29,9 +29,15 @@ function Modal({ isOpen, onClose, title, children }:ModalProps){
 
         //registrerar funktionen hos webbläsaren(när ett "keydown"-event inträffar, kör..)
         document.addEventListener("keydown", handleKeyDown);
+
+        //Sparar overflow's tidigare state
+        const previousOverflow = document.body.style.overflow;
+        //"Låser" overflow så att t.ex scroll inte längre fungerar när modal isOpen
+        document.body.style.overflow = "hidden";
         
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
+            document.body.style.overflow = previousOverflow;
         };
 
 
@@ -44,19 +50,19 @@ function Modal({ isOpen, onClose, title, children }:ModalProps){
 
 
   return(
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" role="dialog" aria-modal="true" aria-labelledby={title ? "modal-title" : undefined} onClick={(event) => event.stopPropagation()}>
-        <div className="modal__head">
-          {title && <h2 id="modal-title">{title}</h2>}
+    <div className='modal-overlay' onClick={onClose}>
+      <div className='modal' role='dialog' aria-modal='true' aria-labelledby={title ? 'modal-title' : undefined} onClick={(event) => event.stopPropagation()}>
+        <div className='modal_head'>
 
-          <button type="button" className="btn btn--secondary" onClick={onClose}>
-            Stäng
-          </button>
+          {title && <h2 id='modal-title'>{title}</h2>}
+
         </div>
 
         {/*HÄR kommer all varierande content ligga */}
         {/*{children} = allt som kommer ligga mellan modalens öppna/stäng-taggar */}
-        {children}
+        <div className='modal_body'>
+          {children}
+        </div>
         
       </div>
     </div>
