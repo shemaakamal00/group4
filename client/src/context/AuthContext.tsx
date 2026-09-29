@@ -2,6 +2,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { supabase } from "../lib/supabase";
 import type { Session, User } from "@supabase/supabase-js";
 
+import { apiFetch } from "../lib/api";
+import type { Profile } from "../types/profile";
+
+
 type SignUpMetadata = {
     first_name?: string;
     last_name?: string;
@@ -10,7 +14,9 @@ type SignUpMetadata = {
 type AuthContextValue = {
     session: Session | null;
     user: User | null;
+    profile: Profile | null;
     loading: boolean;
+    profileLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     signup: (email: string, password: string, metadata?: SignUpMetadata) => Promise<void>;
     logout: () => Promise<void>;
@@ -20,7 +26,10 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [session, setSession] = useState<Session | null>(null);
+    const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
+    const [profileLoading, setProfileLoading] = useState(false);
+
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data }) => {
@@ -37,10 +46,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
     }, []);
 
-async function login(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-}
+    useEffect(() =>{
+        if (!session) {
+            setProfile(null);
+            setProfileLoading(false);
+            return;
+        };
+
+        async function loadProfile(){
+
+            setProfileLoading(true);
+
+            try{
+                const data = await apiFetch<Profile>('/api/profile/me');
+                setProfile(data);
+            }catch(error) {
+                console.error('Kunde inte hämta profil:', error);
+                setProfile(null);
+            }finally{
+                setProfileLoading(false);
+            }
+        };
+
+        loadProfile();
+    }, [session]);
+
+    async function login(email: string, password: string) {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+    }
 
 async function signup(email: string, password: string, metadata?: SignUpMetadata) {
     const { error } = await supabase.auth.signUp({
@@ -59,7 +93,9 @@ async function logout() {
 const value: AuthContextValue = {
     session,
     user: session?.user ?? null,
+    profile,
     loading,
+    profileLoading,
     login,
     signup,
     logout,
