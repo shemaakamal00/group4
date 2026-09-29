@@ -8,6 +8,7 @@ import { supabase } from "./services/supabase";
 //Routes
 import applicationRoutes from "./routes/applicationRoutes";
 import articleRoutes from "./routes/articleRoutes";
+import profileRoutes from "./routes/profileRoutes";
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.get("/api/health", async (_req, res) => {
 app.use("/api/applications", applicationRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/goals", goalRoutes);
+app.use("/api/profile", profileRoutes);
 
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => console.log(`Server på port ${port}`));
