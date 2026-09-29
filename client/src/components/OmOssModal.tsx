@@ -1,4 +1,5 @@
 import Modal from "./shared/modal";
+import ModalFooter from "./shared/modalFooter";
 
 type OmOssModalProps = {
   isOpen: boolean;
@@ -18,6 +19,12 @@ export default function OmOssModal({ isOpen, onClose }: OmOssModalProps) {
         intervjuer och mål på ett och samma ställe — utan att behöva
         blanda kalkylark och anteckningar.
       </p>
+
+      <ModalFooter>
+        <button type="button" className="btn btn--secondary" onClick={onClose}>
+          Stäng
+        </button>
+      </ModalFooter>
     </Modal>
   );
 }

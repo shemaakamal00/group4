@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import Modal from "../../components/shared/modal";
 import { apiFetch } from "../../lib/api";
+import { useUpgradeModal } from "../../context/UpgradeModalContext";
 import type { Goal, GoalUsage } from "../../types/goal";
 import GoalForm from "./GoalForm";
 import "./GoalsPage.css";
 
 function GoalsPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [usage, setUsage] = useState<GoalUsage | null>(null);
   const [loading, setLoading] = useState(true);
@@ -104,7 +106,10 @@ function GoalsPage() {
             delkriterier. Med Premium får du obegränsat antal mål.
           </p>
           <p>
-            <a href="/uppgradera">Uppgradera</a> för att komma igång.
+            <button type="button" className="link-button" onClick={openUpgradeModal}>
+              Uppgradera
+            </button>{" "}
+            för att komma igång.
           </p>
         </div>
       ) : (
@@ -118,8 +123,11 @@ function GoalsPage() {
               </p>
               {atLimit && (
                 <p className="usage-banner__upgrade">
-                  Du har nått taket. <a href="/uppgradera">Uppgradera</a> för
-                  att skapa fler mål.
+                  Du har nått taket.{" "}
+                  <button type="button" className="link-button" onClick={openUpgradeModal}>
+                    Uppgradera
+                  </button>{" "}
+                  för att skapa fler mål.
                 </p>
               )}
             </div>

@@ -3,6 +3,7 @@ import { apiFetch } from "../lib/api";
 
 import ArticleCard from "../components/articles/articleCard";
 import ArticleModal from "../components/articles/articleModal";
+import { useUpgradeModal } from "../context/UpgradeModalContext";
 
 import type { Article, ArticleSummary } from "../types/article";
 
@@ -10,6 +11,7 @@ import type { Article, ArticleSummary } from "../types/article";
 
 function ArticlesPage(){
 
+  const { openUpgradeModal } = useUpgradeModal();
   const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState <Article |null>(null);
 
@@ -55,9 +57,7 @@ function ArticlesPage(){
           {articles.map((article) =>(
 
             <ArticleCard key = {article.id} article={article} 
-              onUpgrade={()=>{
-                console.log('Öppna uppgradering för:', article.id);
-              }} 
+              onUpgrade={openUpgradeModal} 
 
               
               onEdit={() => handleEditArticle(article.id)}

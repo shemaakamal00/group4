@@ -2,7 +2,7 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import goalRoutes from "./routes/goalRoutes";
-
+import paymentRoutes from "./routes/paymentRoutes";
 import { supabase } from "./services/supabase";
 
 //Routes
@@ -12,6 +12,7 @@ import articleRoutes from "./routes/articleRoutes";
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use("/api/payments", paymentRoutes);
 
 app.get("/api/health", async (_req, res) => {
   const { error, count } = await supabase
@@ -27,6 +28,7 @@ app.get("/api/health", async (_req, res) => {
 app.use("/api/applications", applicationRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/goals", goalRoutes);
+app.use("/api/payments", paymentRoutes);
 
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => console.log(`Server på port ${port}`));

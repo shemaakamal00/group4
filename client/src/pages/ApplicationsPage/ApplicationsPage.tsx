@@ -11,6 +11,7 @@ import {
 import { apiDownload, apiFetch } from "../../lib/api";
 import ApplicationForm from "./ApplicationForm";
 import Modal from "../../components/shared/modal";
+import { useUpgradeModal } from "../../context/UpgradeModalContext";
 import type { Application, ApplicationUsage } from "../../types/application";
 import "./ApplicationsPage.css";
 
@@ -105,6 +106,7 @@ function DroppableColumn({ column, items, onCardClick }: DroppableColumnProps) {
 }
 
 function ApplicationsPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const [applications, setApplications] = useState<Application[]>([]);
   const [usage, setUsage] = useState<ApplicationUsage | null>(null);
   const [loading, setLoading] = useState(true);
@@ -317,8 +319,11 @@ function ApplicationsPage() {
           </p>
           {atLimit && (
             <p className="usage-banner__upgrade">
-              Du har nått taket. <a href="/uppgradera">Uppgradera</a> för att
-              skapa fler ansökningar.
+              Du har nått taket.{" "}
+              <button type="button" className="link-button" onClick={openUpgradeModal}>
+                Uppgradera
+              </button>{" "}
+              för att skapa fler ansökningar.
             </p>
           )}
         </div>

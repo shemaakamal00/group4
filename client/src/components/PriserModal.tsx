@@ -1,4 +1,5 @@
 import Modal from "./shared/modal";
+import ModalFooter from "./shared/modalFooter";
 
 type PriserModalProps = {
   isOpen: boolean;
@@ -54,6 +55,12 @@ export default function PriserModal({ isOpen, onClose }: PriserModalProps) {
           </div>
         ))}
       </div>
+
+      <ModalFooter>
+        <button type="button" className="btn btn--secondary" onClick={onClose}>
+          Stäng
+        </button>
+      </ModalFooter>
     </Modal>
   );
 }
