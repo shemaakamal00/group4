@@ -11,10 +11,10 @@ function ProfileModal({ isOpen, onClose }: ProfileModalProps){
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title='Min profil'>
-
-      {profileLoading ?(<p>Laddar profil...</p>):
-    profile ?(
-
+        
+      {profileLoading ?(
+        <p>Laddar profil...</p>
+      ):profile ?(
         <div className='profile-info'>
 
           <p><strong>Förnamn:</strong> {profile.first_name ?? '-'}</p>

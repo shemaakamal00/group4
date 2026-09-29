@@ -8,8 +8,6 @@ import ArticleModal from "../components/articles/articleModal";
 
 import type { Article, ArticleSummary } from "../types/article";
 
-
-
 function ArticlesPage(){
 
   const { profile, profileLoading } = useAuth();
@@ -52,6 +50,7 @@ function ArticlesPage(){
   
   {/* TODO: Skicka ENDAST onEdit för admins */}
   return(
+    
     <main className='container'>
       <h1>Artiklar</h1>
 
