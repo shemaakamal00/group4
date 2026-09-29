@@ -7,6 +7,7 @@ import ApplicationPage from "./pages/ApplicationsPage/ApplicationsPage";
 import HomePage from "./pages/HomePage/HomePage";
 import ArticlesPage from "./pages/ArticlesPage";
 import ArticlePage from "./pages/ArticlePage";
+import ProfilePage from "./pages/ProfilePage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
@@ -62,6 +63,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <GoalsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />
