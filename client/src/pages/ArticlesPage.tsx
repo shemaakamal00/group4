@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
 
+import { useAuth } from "../context/AuthContext";
+
 import ArticleCard from "../components/articles/articleCard";
 import ArticleModal from "../components/articles/articleModal";
 
@@ -10,11 +12,15 @@ import type { Article, ArticleSummary } from "../types/article";
 
 function ArticlesPage(){
 
+  const { profile, profileLoading } = useAuth();
+
   const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState <Article |null>(null);
 
   //innehåller en !array av Article!
   const [articles, setArticles] = useState<ArticleSummary[]> ([]);
+
+  let isAdmin = profile?.role === 'admin';
 
 
   async function loadArticles() {
@@ -60,20 +66,23 @@ function ArticlesPage(){
               }} 
 
               
-              onEdit={() => handleEditArticle(article.id)}
+              onEdit={ isAdmin ? () => handleEditArticle(article.id): undefined}
             />
 
           ))}
         </div>
       )}
       
+      
+      {isAdmin && (
+        <button type='button' 
+          className='btn btn--primary create-article-btn' 
+          onClick={() => {setSelectedArticle(null); setIsArticleModalOpen(true);}}
+        >
+          Skapa artikel
+        </button>
+      )}
 
-      <button type='button' 
-        className='btn btn--primary create-article-btn' 
-        onClick={() => {setSelectedArticle(null); setIsArticleModalOpen(true);}}
-      >
-        Skapa artikel
-      </button>
 
       <ArticleModal isOpen={isArticleModalOpen} 
         onClose={() => setIsArticleModalOpen(false)}
