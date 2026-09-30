@@ -1,0 +1,43 @@
+/* Enskild artikel */
+.article-page_article {
+  width: 50%;
+  margin: 0 auto;
+}
+
+
+/* Rubrik och ingress */
+.article-page_head {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 0.5px solid var(--divider);
+}
+
+.article-page_head .subtitle {
+  margin-top: var(--space-2);
+  margin-bottom: 0;
+}
+
+
+/* Brödtext */
+.article-page_content {
+  line-height: 1.7;
+}
+
+.article-page_content p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+
+/* Navigation */
+.article-page_actions {
+  margin-top: var(--space-3);
+}
+
+
+/* Responsivt */
+@media (max-width: 640px) {
+  .article-page_article {
+    width: 100%;
+  }
+}

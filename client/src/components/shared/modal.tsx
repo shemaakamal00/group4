@@ -56,7 +56,7 @@ function Modal({ isOpen, onClose, title, children}:ModalProps){
 
           {title && <h2 id='modal-title'>{title}</h2>}
 
-            <button type='button' className='modal_close' onClick={onClose} aria-label='Stäng'>
+            <button type='button' className='btn btn--primary modal_close' onClick={onClose} aria-label='Stäng'>
               X
             </button>
 

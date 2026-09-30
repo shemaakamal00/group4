@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ModalFooter from "../shared/modalFooter";
+import "../../styles/articlesPage.css"
 
 import { apiFetch } from "../../lib/api";
 
@@ -115,44 +116,58 @@ function ArticleModal({isOpen, onClose, onSaved, article = null}: ArticleModalPr
   return(
     <Modal isOpen={isOpen} onClose={onClose} title={isEditing ? 'Redigera artikel' : 'Skapa artikel'}>
 
-      <form id='article-form' onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='article-title'>Titel</label>
-          <input
-            id='article-title'
-            type='text'
+      <form id='article-form' className='article-form' onSubmit={handleSubmit}>
+
+
+        <div className='field'>
+
+          <label className='label' htmlFor='article-title'>Titel *</label>
+          <input id='article-title' className='input' type='text'
             value={title}
             onChange={(event) => setTitle(event.target.value)}
+            placeholder='Artikelns titel'
             required
           />
         </div>
 
-        <div>
-          <label htmlFor='article-description'>Beskrivning</label>
+
+
+        <div className='field'>
+          <label className='label' htmlFor='article-description'>Beskrivning*</label>
           <textarea
             id='article-description'
+            className='textarea article-form_description'
             value={description}
             onChange={(event) => setDescription(event.target.value)}
+            placeholder='Kort beskrivning av artikeln'
             required
           />
         </div>
 
-        <div>
-          <label htmlFor='article-text'>Artikeltext</label>
+
+        <div className='field'>
+          <label className='label' htmlFor='article-text'>Artikeltext*</label>
+
           <textarea
             id='article-text'
+            className='textarea article-form_text'
             value={articleText}
             onChange={(event) => setArticleText(event.target.value)}
+            placeholder='Skriv artikelns innehåll här...'
             required
           />
         </div>
 
-        <div>
-          <label htmlFor='required-level'>Prenumerationsnivå</label>
+        <div className='field'>
+          <label className='label' htmlFor='required-level'>Prenumerationsnivå</label>
+
           <select
             id='required-level'
+            className='select'
             value={requiredLevel}
-            onChange={(event) => setRequiredLevel(Number(event.target.value))}
+            onChange={(event) =>
+              setRequiredLevel(Number(event.target.value))
+            }
           >
             <option value={1}>Grundpaket</option>
             <option value={2}>Plus</option>
@@ -160,14 +175,16 @@ function ArticleModal({isOpen, onClose, onSaved, article = null}: ArticleModalPr
           </select>
         </div>
 
-        {errorMessage && (<p className="form-error">{errorMessage}</p>)}
-
-
+        {errorMessage && (
+          <p className='article-form_error'>
+            {errorMessage}
+          </p>
+        )}
       </form>
 
       {/*Såhär kan ModalFooter användas!! */}
       <ModalFooter>
-        {isEditing && (<button type="button" className='btn btn--secondary' onClick ={handleDelete}>
+        {isEditing && (<button type="button" className='btn article-form_delete' onClick ={handleDelete}>
           Ta bort
         </button>)}
 

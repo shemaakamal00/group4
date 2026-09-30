@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
+import "../Styles/ArticlesPage.css";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -51,37 +52,41 @@ function ArticlesPage(){
   {/* TODO: Skicka ENDAST onEdit för admins */}
   return(
     
-    <main className='container'>
-      <h1>Artiklar</h1>
+    <main className='container articles-page'>
 
-      {articles.length === 0 ?(<p>Det finns inga tillgängliga artiklar än!</p>):
-      (
-        <div className='article-grid'>
-          {articles.map((article) =>(
-
-            <ArticleCard key = {article.id} article={article} 
-              onUpgrade={()=>{
-                console.log('Öppna uppgradering för:', article.id);
-              }} 
-
-              
-              onEdit={ isAdmin ? () => handleEditArticle(article.id): undefined}
-            />
-
-          ))}
+      <div className='articles-page_head'>
+        <div>
+          <h1>Artiklar</h1>
+          <h3 className='subtitle'>Tips och guider som hjälper dig i ditt jobbsökande!</h3>
         </div>
-      )}
-      
-      
-      {isAdmin && (
-        <button type='button' 
-          className='btn btn--primary create-article-btn' 
-          onClick={() => {setSelectedArticle(null); setIsArticleModalOpen(true);}}
-        >
-          Skapa artikel
-        </button>
-      )}
 
+        {isAdmin && (
+          <button type='button' 
+            className='btn btn--primary articles-page_create' 
+            onClick={() => {setSelectedArticle(null); setIsArticleModalOpen(true);}}
+          >
+            + Skapa artikel
+          </button>
+        )}
+      </div>
+
+        {articles.length === 0 ?(<p>Det finns inga tillgängliga artiklar än!</p>):
+        (
+          <div className='article-grid'>
+            {articles.map((article) =>(
+
+              <ArticleCard key = {article.id} article={article} 
+                onUpgrade={()=>{
+                  console.log('Öppna uppgradering för:', article.id);
+                }} 
+
+                
+                onEdit={ isAdmin ? () => handleEditArticle(article.id): undefined}
+              />
+
+            ))}
+          </div>
+        )}
 
       <ArticleModal isOpen={isArticleModalOpen} 
         onClose={() => setIsArticleModalOpen(false)}

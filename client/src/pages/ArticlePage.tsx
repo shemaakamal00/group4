@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import "../Styles/ArticlePage.css";
+
 
 import {apiFetch} from "../lib/api";
 
@@ -71,19 +73,33 @@ function ArticlePage() {
     )
   };
 
-  return(
-    <main className="container">
-      <article>
+  return (
+  <main className='container article-page'>
+
+    <article className='article-page_article'>
+
+      <header className='article-page_head'>
         <h1>{article.article_title}</h1>
 
-        {article.article_description && (
-          <p>{article.article_description}</p>
+        {article.article_description &&(
+          <p className='subtitle'> {article.article_description}</p>
         )}
+      </header>
 
+      <div className='card article-page_content'>
         <p>{article.article_text}</p>
-      </article>
-    </main>
-  );
+      </div>
+
+      <div className='article-page_actions'>
+        <Link to='/articles' className='btn btn--primary'>
+          Tillbaka
+        </Link>
+      </div>
+
+    </article>
+
+  </main>
+);
 };
 
 export default ArticlePage;
