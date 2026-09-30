@@ -11,7 +11,7 @@ import type { Article, ArticleSummary } from "../types/article";
 
 function ArticlesPage(){
 
-  const { profile, profileLoading } = useAuth();
+  const { profile } = useAuth();
 
   const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState <Article |null>(null);
