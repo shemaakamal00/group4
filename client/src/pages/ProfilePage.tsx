@@ -4,6 +4,29 @@ import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import { useUpgradeModal } from "../context/UpgradeModalContext";
 import type { Profile } from "../types/profile";
+import type { PaymentReceipt } from "../types/payment";
+
+function formatDate(iso: string | null | undefined): string {
+  if (!iso) return "-";
+  return new Date(iso).toLocaleDateString("sv-SE", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+function statusPillClass(status?: string): string {
+  switch (status) {
+    case "Genomförd":
+      return "pill--active";
+    case "Väntar":
+      return "pill--pending";
+    case "Misslyckad":
+      return "pill--rejected";
+    default:
+      return "pill--inactive";
+  }
+}
 
 function ProfilePage() {
   const { user } = useAuth();
@@ -29,6 +52,10 @@ function ProfilePage() {
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
+  const [payments, setPayments] = useState<PaymentReceipt[]>([]);
+  const [paymentsLoading, setPaymentsLoading] = useState(true);
+  const [paymentsError, setPaymentsError] = useState<string | null>(null);
+
   useEffect(() => {
     async function load() {
       try {
@@ -43,6 +70,20 @@ function ProfilePage() {
       }
     }
     load();
+  }, []);
+
+  useEffect(() => {
+    async function loadPayments() {
+      try {
+        const data = await apiFetch<PaymentReceipt[]>("/api/payments");
+        setPayments(data);
+      } catch (err) {
+        setPaymentsError(err instanceof Error ? err.message : "Något gick fel");
+      } finally {
+        setPaymentsLoading(false);
+      }
+    }
+    loadPayments();
   }, []);
 
   async function handleNameSubmit(e: FormEvent) {
@@ -211,6 +252,28 @@ function ProfilePage() {
             {passwordSaving ? "Sparar…" : "Byt lösenord"}
           </button>
         </form>
+      </div>
+
+      <div className="card">
+        <h3>Kvittohistorik</h3>
+        {paymentsLoading ? (
+          <p className="muted">Laddar kvitton…</p>
+        ) : paymentsError ? (
+          <p className="pill pill--rejected">{paymentsError}</p>
+        ) : payments.length === 0 ? (
+          <p className="muted">Inga betalningar ännu.</p>
+        ) : (
+          <ul className="receipt-list">
+            {payments.map((p) => (
+              <li key={p.id} className="receipt-list__row">
+                <span className="receipt-list__date">{formatDate(p.paid_at ?? p.created_at)}</span>
+                <span className="receipt-list__level">{p.level_name}</span>
+                <span className="receipt-list__total">{p.total} kr</span>
+                <span className={`pill ${statusPillClass(p.status)}`}>{p.status}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );
