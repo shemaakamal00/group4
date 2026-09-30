@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Översikt" },
   { to: "/applications", label: "Ansökningar" },
+  { to: "/articles", label: "Artiklar" },
   { to: "/goals", label: "Mål" },
   { to: "/profile", label: "Profil" },
 ];
