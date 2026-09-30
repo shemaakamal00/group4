@@ -10,6 +10,7 @@ import ArticlePage from "./pages/ArticlePage";
 import ProfilePage from "./pages/ProfilePage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import PublicOnlyRoute from "./components/PublicOnlyRoute";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import GoalsPage from "./pages/GoalsPage/GoalsPage";
 
@@ -19,7 +20,14 @@ export default function App() {
       <UpgradeModal />
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <PublicOnlyRoute>
+              <HomePage />
+            </PublicOnlyRoute>
+          }
+        />
 
         <Route
           path="/applications"
@@ -30,14 +38,12 @@ export default function App() {
           }
         />
 
-
-        <Route 
-          path="/articles" 
+        <Route
+          path="/articles"
           element={
             <ProtectedRoute>
               <ArticlesPage />
             </ProtectedRoute>
-
           }
         />
 
