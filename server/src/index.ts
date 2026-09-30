@@ -2,7 +2,8 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import goalRoutes from "./routes/goalRoutes";
-
+import paymentRoutes from "./routes/paymentRoutes";
+import profileRoutes from "./routes/profileRoutes";
 import { supabase } from "./services/supabase";
 
 //Routes
@@ -27,6 +28,8 @@ app.get("/api/health", async (_req, res) => {
 app.use("/api/applications", applicationRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/goals", goalRoutes);
+app.use("/api/payments", paymentRoutes);
+app.use("/api/profile", profileRoutes);
 
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => console.log(`Server på port ${port}`));

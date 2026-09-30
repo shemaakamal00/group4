@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "./shared/modal";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,6 +11,7 @@ type AuthModalProps = {
 
 export default function AuthModal({ isOpen, onClose, initialTab }: AuthModalProps) {
     const { login, signup } = useAuth();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<"login" | "register">(initialTab);
 
     useEffect(() => {
@@ -41,6 +43,7 @@ export default function AuthModal({ isOpen, onClose, initialTab }: AuthModalProp
         try {
             await login(loginEmail, loginPassword);
             onClose();
+            navigate("/dashboard");
         } catch (err) {
             setLoginError("Fel e-post eller lösenord");
         } finally {
@@ -70,6 +73,7 @@ export default function AuthModal({ isOpen, onClose, initialTab }: AuthModalProp
                 last_name: lastName,
             });
             onClose();
+            navigate("/dashboard");
         } catch (err) {
             setRegisterError("Kunde inte skapa kontot, försök igen");
         } finally {

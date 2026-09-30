@@ -9,6 +9,7 @@ import {
   YAxis,
 } from "recharts";
 import { apiFetch } from "../../lib/api";
+import { useUpgradeModal } from "../../context/UpgradeModalContext";
 import type { ApplicationStats } from "../../types/application";
 import "./DashboardPage.css";
 
@@ -36,6 +37,7 @@ function formatMonth(iso: string): string {
 }
 
 function DashboardPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const [stats, setStats] = useState<ApplicationStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -137,8 +139,10 @@ function DashboardPage() {
             Se hur dina ansökningar utvecklas över tid med ett diagram.
           </p>
           <p>
-            <a href="/uppgradera">Uppgradera till Plus</a> för att låsa upp
-            diagram.
+            <button type="button" className="link-button" onClick={openUpgradeModal}>
+              Uppgradera till Plus
+            </button>{" "}
+            för att låsa upp diagram.
           </p>
         </div>
       )}
@@ -169,8 +173,10 @@ function DashboardPage() {
             ansökningsvanor.
           </p>
           <p>
-            <a href="/uppgradera">Uppgradera till Premium</a> för att låsa upp
-            insikter.
+            <button type="button" className="link-button" onClick={openUpgradeModal}>
+              Uppgradera till Premium
+            </button>{" "}
+            för att låsa upp insikter.
           </p>
         </div>
       )}

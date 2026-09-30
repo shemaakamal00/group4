@@ -6,6 +6,47 @@
   padding: var(--space-3) 18px;
 }
 
+/* Feature-ikoner (landningssida) */
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto var(--space-2);
+  font-size: 24px;
+  border-radius: var(--radius-md);
+}
+
+.feature-icon--tan {
+  background: var(--status-interview-bg);
+}
+
+.feature-icon--pink {
+  background: var(--status-rejected-bg);
+}
+
+.feature-icon--green {
+  background: var(--status-offer-bg);
+}
+
+/* CTA-banderoll (landningssida) */
+.cta-banner {
+  padding: var(--space-4) var(--space-3);
+  text-align: center;
+  color: var(--on-dark);
+  background: var(--rust);
+  border-radius: var(--radius-lg);
+}
+
+.cta-banner h2 {
+  color: var(--on-dark);
+}
+
+.cta-banner p {
+  color: var(--on-dark);
+}
+
 /* Statistikkort */
 .stat {
   background: var(--surface);
@@ -241,7 +282,9 @@
   align-items: center;
   justify-content: center;
   width: 30px;
-  height: 30;
+  height: 30px;              
+  font-family: var(--font-serif);   
+  font-weight: 600;                 
   color: var(--brown-dark);
   background: var(--orange);
   border-radius: var(--radius-sm);
@@ -263,7 +306,25 @@
 }
 
 .nav-link {
+  padding: 0;
+  font: inherit;
   color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: var(--rust);
+}
+
+.link-button {
+  padding: 0;
+  font: inherit;
+  color: var(--rust);
+  text-decoration: underline;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
@@ -431,6 +492,35 @@
   color: var(--status-offer-fg);
 }
 
+/* Footer */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-3) 26px;
+  border-top: 0.5px solid var(--border);
+}
+
+.footer__copy {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+
+.footer__links {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.footer__link {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.footer__link:hover {
+  color: var(--rust);
+}
 /*ARTICLES*/
 
 /* Artikellista */
@@ -521,6 +611,11 @@
   }
   .display {
     font-size: 32px;
+  }
+
+  .footer {
+   justify-content: center;
+   text-align: center;
   }
 }
 

@@ -1,9 +1,20 @@
 export default function Footer() {
   return (
-  <div>
-  <a href="/integritet">Integritet</a> 
-  <a href="/villkor">Villkor</a> 
-  <a href="/kontakt">Kontakt</a> 
-  </div>
+    <footer className="footer">
+      <span className="footer__copy">
+        © {new Date().getFullYear()} KarriärKoll
+      </span>
+      <nav className="footer__links">
+        <a className="footer__link" href="/integritet">
+          Integritet
+        </a>
+        <a className="footer__link" href="/villkor">
+          Villkor
+        </a>
+        <a className="footer__link" href="/kontakt">
+          Kontakt
+        </a>
+      </nav>
+    </footer>
   );
 }
