@@ -4,7 +4,7 @@ import { supabase } from "./supabase";
 export async function getProfile(userId: string) {
   const { data: profile, error: profileError } = await supabase
     .from("profile")
-    .select("first_name, last_name, level_id")
+    .select("first_name, last_name, role, level_id")
     .eq("id", userId)
     .single();
   if (profileError) return { data: null, error: profileError };
@@ -20,6 +20,7 @@ export async function getProfile(userId: string) {
     data: {
       first_name: profile.first_name,
       last_name: profile.last_name,
+      role: profile.role,
       level_name: level.level_name,
       access_level: level.access_level,
     },
