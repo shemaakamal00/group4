@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import { Link, useParams } from "react-router-dom";
-import "../Styles/ArticlePage.css";
+import "../styles/ArticlePage.css";
 
 
 import {apiFetch} from "../lib/api";

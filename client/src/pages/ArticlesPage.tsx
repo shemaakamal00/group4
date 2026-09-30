@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
-import "../Styles/ArticlesPage.css";
+import "../styles/ArticlesPage.css";
 
 import { useAuth } from "../context/AuthContext";
 
