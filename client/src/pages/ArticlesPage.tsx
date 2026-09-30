@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
 
-import ArticleCard from "../components/articles/articleCard";
-import ArticleModal from "../components/articles/articleModal";
+import ArticleCard from "../components/articles/ArticleCard";
+import ArticleModal from "../components/articles/ArticleModal";
 import { useUpgradeModal } from "../context/UpgradeModalContext";
 
 import type { Article, ArticleSummary } from "../types/article";
-
+import type {Profile} from "../types/profile";
 
 
 function ArticlesPage(){
@@ -17,7 +17,9 @@ function ArticlesPage(){
 
   //innehåller en !array av Article!
   const [articles, setArticles] = useState<ArticleSummary[]> ([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
+    const isAdmin = profile?.role === "admin";
 
   async function loadArticles() {
     try{
@@ -25,6 +27,15 @@ function ArticlesPage(){
       setArticles(data);
     } catch (error) {
       console.error('Kunde inte hämta artiklar:', error);
+    }
+  }
+
+    async function loadProfile() {
+    try {
+      const data = await apiFetch<Profile>("/api/profile");
+      setProfile(data);
+    } catch (error) {
+      console.error("Kunde inte hämta profilen:", error);
     }
   }
 
@@ -43,6 +54,7 @@ function ArticlesPage(){
 
   useEffect(() => {
     loadArticles();
+    loadProfile();
   }, []);
 
   
@@ -58,9 +70,7 @@ function ArticlesPage(){
 
             <ArticleCard key = {article.id} article={article} 
               onUpgrade={openUpgradeModal} 
-
-              
-              onEdit={() => handleEditArticle(article.id)}
+              onEdit={ isAdmin ? () => handleEditArticle(article.id) : undefined}
             />
 
           ))}
@@ -75,11 +85,13 @@ function ArticlesPage(){
         Skapa artikel
       </button>
 
-      <ArticleModal isOpen={isArticleModalOpen} 
-        onClose={() => setIsArticleModalOpen(false)}
-        onSaved={loadArticles}
-        article={selectedArticle}
-      />
+      {isAdmin && (
+        <ArticleModal isOpen={isArticleModalOpen} 
+          onClose={() => setIsArticleModalOpen(false)}
+          onSaved={loadArticles}
+          article={selectedArticle}
+        />
+      )}
 
     </main>
   );
