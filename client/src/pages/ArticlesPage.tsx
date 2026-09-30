@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
 
-import ArticleCard from "../components/articles/articleCard";
-import ArticleModal from "../components/articles/articleModal";
+
+import ArticleCard from "../components/articles/ArticleCard";
+import ArticleModal from "../components/articles/ArticleModal";
 import { useUpgradeModal } from "../context/UpgradeModalContext";
 
 import type { Article, ArticleSummary } from "../types/article";
+import type {Profile} from "../types/profile";
 
+import "../styles/articlesPage.css";
 
 
 function ArticlesPage(){
@@ -17,7 +20,9 @@ function ArticlesPage(){
 
   //innehåller en !array av Article!
   const [articles, setArticles] = useState<ArticleSummary[]> ([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
+    const isAdmin = profile?.role === "admin";
 
   async function loadArticles() {
     try{
@@ -25,6 +30,15 @@ function ArticlesPage(){
       setArticles(data);
     } catch (error) {
       console.error('Kunde inte hämta artiklar:', error);
+    }
+  }
+
+    async function loadProfile() {
+    try {
+      const data = await apiFetch<Profile>("/api/profile");
+      setProfile(data);
+    } catch (error) {
+      console.error("Kunde inte hämta profilen:", error);
     }
   }
 
@@ -43,13 +57,33 @@ function ArticlesPage(){
 
   useEffect(() => {
     loadArticles();
+    loadProfile();
   }, []);
 
   
   {/* TODO: Skicka ENDAST onEdit för admins */}
   return(
-    <main className='container'>
-      <h1>Artiklar</h1>
+    <main className='container articles-page'>
+
+      <div className='articles-page_head'>
+        <div>
+          <h1>Artiklar</h1>
+          <p className='subtitle'> Tips och guider för ditt jobbsökande </p>
+        </div>
+
+        {isAdmin && (
+          <button
+            type='button'
+            className='btn btn--primary articles-page_create'
+            onClick={() => {
+              setSelectedArticle(null);
+              setIsArticleModalOpen(true);
+            }}
+          >
+            Skapa artikel
+          </button>
+        )}
+      </div>
 
       {articles.length === 0 ?(<p>Det finns inga tillgängliga artiklar än!</p>):
       (
@@ -58,28 +92,20 @@ function ArticlesPage(){
 
             <ArticleCard key = {article.id} article={article} 
               onUpgrade={openUpgradeModal} 
-
-              
-              onEdit={() => handleEditArticle(article.id)}
+              onEdit={ isAdmin ? () => handleEditArticle(article.id) : undefined}
             />
 
           ))}
         </div>
       )}
-      
 
-      <button type='button' 
-        className='btn btn--primary create-article-btn' 
-        onClick={() => {setSelectedArticle(null); setIsArticleModalOpen(true);}}
-      >
-        Skapa artikel
-      </button>
-
-      <ArticleModal isOpen={isArticleModalOpen} 
-        onClose={() => setIsArticleModalOpen(false)}
-        onSaved={loadArticles}
-        article={selectedArticle}
-      />
+      {isAdmin && (
+        <ArticleModal isOpen={isArticleModalOpen} 
+          onClose={() => setIsArticleModalOpen(false)}
+          onSaved={loadArticles}
+          article={selectedArticle}
+        />
+      )}
 
     </main>
   );
