@@ -1,11 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Översikt" },
   { to: "/applications", label: "Ansökningar" },
+  { to: "/articles", label: "Artiklar" },
   { to: "/goals", label: "Mål" },
-  { to: "/profile", label: "Profil" },
 ];
 
 function AppHeader() {
@@ -16,10 +16,10 @@ function AppHeader() {
 
   return (
     <header className="navbar">
-      <div className="brand">
-        <span className="brand__logo">K</span>
-        <span className="brand__name">KarriärKoll</span>
-      </div>
+          <Link to="/dashboard" className="brand">
+            <span className="brand__logo">K</span>
+            <span className="brand__name">KarriärKoll</span>
+          </Link>
       <div className="nav-links">
         {NAV_ITEMS.map((item) => (
           <NavLink
@@ -35,9 +35,15 @@ function AppHeader() {
         <button type="button" className="link-button" onClick={() => logout()}>
           Logga ut
         </button>
-        <div className="avatar" title={user?.email ?? undefined}>
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            isActive ? "avatar avatar--active" : "avatar"
+          }
+          title={user?.email ?? undefined}
+        >
           {initial}
-        </div>
+        </NavLink>
       </div>
     </header>
   );
