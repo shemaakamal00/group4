@@ -66,6 +66,7 @@
 
 .article-card_content {
   margin-bottom: var(--space-3);
+  padding: 5%;
 }
 
 
@@ -85,6 +86,7 @@
 .article-card--locked {
   display: flex;
   flex-direction: column;
+  padding-bottom: 5%;
 }
 
 .article-card--locked .article-card_content {
