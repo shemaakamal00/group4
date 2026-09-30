@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import ModalFooter from "../shared/modalFooter";
 import "../../styles/articlesPage.css"
 
@@ -48,7 +48,7 @@ function ArticleModal({isOpen, onClose, onSaved, article = null}: ArticleModalPr
 
   },[isOpen, article]);
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>){
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>){
     event.preventDefault();
 
     setErrorMessage('');

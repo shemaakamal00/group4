@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
-import "../styles/ArticlesPage.css";
+import "../styles/articlesPage.css";
 
 import { useAuth } from "../context/AuthContext";
 
-import ArticleCard from "../components/articles/articleCard";
-import ArticleModal from "../components/articles/articleModal";
+import ArticleCard from "../components/articles/ArticleCard";
+import ArticleModal from "../components/articles/ArticleModal";
 
 import type { Article, ArticleSummary } from "../types/article";
 
