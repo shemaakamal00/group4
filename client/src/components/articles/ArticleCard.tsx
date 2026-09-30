@@ -18,14 +18,16 @@ function ArticleCard({article, onUpgrade, onEdit}: ArticleCardProps){
     return (
       <article className='card article-card'>
 
-        <div className='article-card_content'>
+      <Link to={`/articles/${article.id}`} className='article-card_link'>
+          <div className='article-card_content'>
 
-          <h2>{article.article_title}</h2>
+            <h2>{article.article_title}</h2>
 
-          {article.article_description && (
-            <p>{article.article_description}</p>
-          )}
-        </div>
+            {article.article_description && (
+              <p>{article.article_description}</p>
+            )}
+          </div>
+        </Link>
 
         <div className='article-card_actions'>
           <button
@@ -69,17 +71,13 @@ function ArticleCard({article, onUpgrade, onEdit}: ArticleCardProps){
   };
 
   return(
-    <article className='card article-card'>
+    <Link to={`/articles/${article.id}`} className='card article-card article-card_link'>
+      <div className='article-card_content'>
+        <h2>{article.article_title}</h2>
 
-      <Link to={`/articles/${article.id}`} className='article-card_link'>
-        <div className='article-card_content'>
-          <h2>{article.article_title}</h2>
-
-          {article.article_description && (<p>{article.article_description}</p>)}
-        </div>
-      </Link>
-
-    </article>
+        {article.article_description && (<p>{article.article_description}</p>)}
+      </div>
+    </Link>
   );
 };
 

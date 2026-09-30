@@ -1,0 +1,166 @@
+/* Articles-sidan */
+
+/* Sidhuvud */
+
+.articles-page_head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 0.5px solid var(--divider);
+}
+
+.articles-page_head .subtitle {
+  margin-top: var(--space-1);
+  margin-bottom: 0;
+}
+
+.articles-page_create {
+  flex-shrink: 0;
+}
+
+
+/* Artikellista */
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+
+/* Artikelkort */
+
+.article-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(61, 40, 23, 0.08);
+}
+
+.article-card h2 {
+  margin-bottom: var(--space-2);
+}
+
+.article-card_link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.article-card_content {
+  margin-bottom: var(--space-3);
+}
+
+
+/* Actions */
+
+.article-card_actions {
+  margin-top: auto;
+  padding-top: var(--space-3);
+
+  border-top: 0.5px solid var(--border);
+  text-align: right;
+}
+
+
+/* Låst artikel */
+
+.article-card--locked {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-card--locked .article-card_content {
+  opacity: 0.7;
+}
+
+.article-card_locked-content {
+  margin-top: auto;
+  padding-top: var(--space-3);
+
+  border-top: 0.5px solid var(--border);
+  text-align: center;
+}
+
+.article-card_locked-content p {
+  margin-bottom: var(--space-1);
+}
+
+.article-card_locked-content .btn {
+  margin-top: var(--space-2);
+}
+
+
+
+/* Artikelformulär */
+.article-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.article-form_description {
+  min-height: 80px;
+}
+
+.article-form_text {
+  min-height: 220px;
+}
+
+.article-form_error {
+  margin: 0;
+  padding: 8px 12px;
+
+  color: var(--status-rejected-fg);
+  background: var(--status-rejected-bg);
+  border-radius: var(--radius-sm);
+}
+
+.article-form_delete {
+  margin-right: auto;
+
+  color: var(--status-rejected-fg);
+  background-color: transparent;
+  border-color: var(--status-rejected-fg);
+}
+
+.article-form_delete:hover {
+  color: var(--on-dark);
+  background-color: var(--status-rejected-fg);
+}
+
+
+/* Responsivt */
+
+@media (min-width: 641px) and (max-width: 800px) {
+  .article-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .articles-page_head {
+    flex-direction: column;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr;
+  }
+}

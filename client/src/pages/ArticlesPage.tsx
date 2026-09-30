@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
 
+
 import ArticleCard from "../components/articles/ArticleCard";
 import ArticleModal from "../components/articles/ArticleModal";
 import { useUpgradeModal } from "../context/UpgradeModalContext";
 
 import type { Article, ArticleSummary } from "../types/article";
 import type {Profile} from "../types/profile";
+
+import "../styles/articlesPage.css";
 
 
 function ArticlesPage(){
@@ -60,8 +63,27 @@ function ArticlesPage(){
   
   {/* TODO: Skicka ENDAST onEdit för admins */}
   return(
-    <main className='container'>
-      <h1>Artiklar</h1>
+    <main className='container articles-page'>
+
+      <div className='articles-page_head'>
+        <div>
+          <h1>Artiklar</h1>
+          <p className='subtitle'> Tips och guider för ditt jobbsökande </p>
+        </div>
+
+        {isAdmin && (
+          <button
+            type='button'
+            className='btn btn--primary articles-page_create'
+            onClick={() => {
+              setSelectedArticle(null);
+              setIsArticleModalOpen(true);
+            }}
+          >
+            Skapa artikel
+          </button>
+        )}
+      </div>
 
       {articles.length === 0 ?(<p>Det finns inga tillgängliga artiklar än!</p>):
       (
@@ -76,14 +98,6 @@ function ArticlesPage(){
           ))}
         </div>
       )}
-      
-
-      <button type='button' 
-        className='btn btn--primary create-article-btn' 
-        onClick={() => {setSelectedArticle(null); setIsArticleModalOpen(true);}}
-      >
-        Skapa artikel
-      </button>
 
       {isAdmin && (
         <ArticleModal isOpen={isArticleModalOpen} 
