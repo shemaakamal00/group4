@@ -12,3 +12,9 @@ export async function purchase(req: Request, res: Response) {
 
   res.status(201).json(data);
 }
+
+export async function list(req: Request, res: Response) {
+  const { data, error } = await service.listPayments(req.user!.id);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+}

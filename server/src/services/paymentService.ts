@@ -48,3 +48,30 @@ export async function purchaseLevel(userId: string, levelId: number) {
 
   return { data: { ...payment, level_name: level.level_name }, error: null };
 }
+
+export async function listPayments(userId: string) {
+  const { data, error } = await supabase
+    .from("payment")
+    .select("id, total, status, created_at, paid_at, subscription_level(level_name)")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (error) return { data: null, error };
+
+  const payments = data.map((row) => {
+    const level = Array.isArray(row.subscription_level)
+      ? row.subscription_level[0]
+      : row.subscription_level;
+
+    return {
+      id: row.id,
+      total: row.total,
+      status: row.status,
+      created_at: row.created_at,
+      paid_at: row.paid_at,
+      level_name: level?.level_name ?? "Okänd nivå",
+    };
+  });
+
+  return { data: payments, error: null };
+}

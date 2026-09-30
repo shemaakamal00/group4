@@ -560,3 +560,22 @@
   }
 }
 
+/* Kvittohistorik */
+.receipt-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.receipt-list__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 10px 0;
+  font-size: var(--fs-sm);
+  border-bottom: 0.5px solid var(--divider);
+}
+
+.receipt-list__row:last-child {
+  border-bottom: none;
+}
