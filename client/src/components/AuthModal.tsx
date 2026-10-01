@@ -82,95 +82,141 @@ export default function AuthModal({ isOpen, onClose, initialTab }: AuthModalProp
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <div>
-                <button type="button" onClick={() => setActiveTab("login")}>Logga in</button>
-                <button type="button" onClick={() => setActiveTab("register")}>Registrera</button>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            title={activeTab === "login" ? "Logga in" : "Skapa konto"}
+        >
+            <div className="auth-tabs">
+                <button
+                    type="button"
+                    className={activeTab === "login" ? "btn btn--primary" : "btn btn--secondary"}
+                    onClick={() => setActiveTab("login")}
+                >
+                    Logga in
+                </button>
+                <button
+                    type="button"
+                    className={activeTab === "register" ? "btn btn--primary" : "btn btn--secondary"}
+                    onClick={() => setActiveTab("register")}
+                >
+                    Registrera
+                </button>
             </div>
 
             {activeTab === "login" ? (
                 <form onSubmit={handleLoginSubmit}>
-                    <label>
-                        E-post
+                    <div className="field">
+                        <label className="label" htmlFor="login-email">
+                            E-post
+                        </label>
                         <input
+                            id="login-email"
+                            className="input"
                             type="email"
                             value={loginEmail}
                             onChange={(e) => setLoginEmail(e.target.value)}
                             required
                         />
-                    </label>
+                    </div>
 
-                    <label>
-                        Lösenord
+                    <div className="field">
+                        <label className="label" htmlFor="login-password">
+                            Lösenord
+                        </label>
                         <input
+                            id="login-password"
+                            className="input"
                             type="password"
                             value={loginPassword}
                             onChange={(e) => setLoginPassword(e.target.value)}
                             required
                         />
-                    </label>
+                    </div>
 
-                    {loginError && <p style={{ color: "red" }}>{loginError}</p>}
+                    {loginError && <p className="pill pill--rejected">{loginError}</p>}
 
-                    <button type="submit" disabled={isLoggingIn}>
+                    <button type="submit" className="btn btn--primary" disabled={isLoggingIn}>
                         {isLoggingIn ? "Loggar in..." : "Logga in"}
                     </button>
                 </form>
             ) : (
                 <form onSubmit={handleRegisterSubmit}>
-                    <label>
-                        Förnamn
-                        <input
-                            type="text"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            required
-                        />
-                    </label>
+                    <div className="grid grid-2">
+                        <div className="field">
+                            <label className="label" htmlFor="register-first-name">
+                                Förnamn
+                            </label>
+                            <input
+                                id="register-first-name"
+                                className="input"
+                                type="text"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <label>
-                        Efternamn
-                        <input
-                            type="text"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            required
-                        />
-                    </label>
+                        <div className="field">
+                            <label className="label" htmlFor="register-last-name">
+                                Efternamn
+                            </label>
+                            <input
+                                id="register-last-name"
+                                className="input"
+                                type="text"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </div>
 
-                    <label>
-                        E-post
+                    <div className="field">
+                        <label className="label" htmlFor="register-email">
+                            E-post
+                        </label>
                         <input
+                            id="register-email"
+                            className="input"
                             type="email"
                             value={registerEmail}
                             onChange={(e) => setRegisterEmail(e.target.value)}
                             required
                         />
-                    </label>
+                    </div>
 
-                    <label>
-                        Lösenord
+                    <div className="field">
+                        <label className="label" htmlFor="register-password">
+                            Lösenord
+                        </label>
                         <input
+                            id="register-password"
+                            className="input"
                             type="password"
                             value={registerPassword}
                             onChange={(e) => setRegisterPassword(e.target.value)}
                             required
                         />
-                    </label>
+                    </div>
 
-                    <label>
-                        Upprepa lösenord
+                    <div className="field">
+                        <label className="label" htmlFor="register-confirm-password">
+                            Upprepa lösenord
+                        </label>
                         <input
+                            id="register-confirm-password"
+                            className="input"
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
-                    </label>
+                    </div>
 
-                    {registerError && <p style={{ color: "red" }}>{registerError}</p>}
+                    {registerError && <p className="pill pill--rejected">{registerError}</p>}
 
-                    <button type="submit" disabled={isRegistering}>
+                    <button type="submit" className="btn btn--primary" disabled={isRegistering}>
                         {isRegistering ? "Skapar konto..." : "Registrera"}
                     </button>
                 </form>
