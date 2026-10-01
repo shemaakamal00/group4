@@ -1,103 +1,153 @@
-# Systemutveckling, Grupprojekt 1 - Grupp 4
+# KarriärKoll
 
-## Links
-Github: https://github.com/shemaakamal00/group4
-Trello: https://trello.com/b/eTgY8Ev1/gruppuppgift-1-sysutv
+KarriärKoll är ett webbaserat verktyg för att hålla koll på jobbansökningar, sätta mål och följa sin utveckling. Tjänsten har tre prenumerationsnivåer som ger tillgång till olika funktioner och innehåll.
 
-## Projektmedlemmar
-- Nikolaos Kiosses
-- Sheema Kamal
-- Harald Wallin 
+Projektet är utvecklat som ett grupparbete i kursen Systemutveckling på Fullstackutvecklarprogrammet vid Medieinstitutet.
 
-## Description
-Vi bygger ett verktyg för att strukturera och hålla koll på jobbansökningar.
+## Live
 
-Användaren ska kunna skapa och hantera jobbansökningar, sätta mål och följa
-sin aktivitet. Applikationen kommer även att innehålla olika medlemsnivåer
-som ger tillgång till utökad funktionalitet och innehåll. 
+- **Frontend:** [(https://group4-pi.vercel.app/)]
+- **Backend:** [(https://group4-sdf0.onrender.com/)]
 
-## TechStack
+## Teknikstack
 
-Versionhantering
-- Github
+| Del | Teknik |
+|---|---|
+| Frontend | Vite, React 19, TypeScript, CSS |
+| Backend | Node.js, Express, TypeScript |
+| Databas | Supabase (PostgreSQL) |
+| Autentisering | Supabase Auth |
+| Deploy | Vercel + Render |
+| Diagram | Recharts |
+| Drag & drop | @dnd-kit/core |
+| PDF-generering | pdfkit |
+| API-testning | Postman |
 
-Frontend
-- Vite
-- React
-- TypeScript
-- CSS
+## Team och arbetsfördelning
 
-Backend
-- Node.js
-- Express
-- TypeScript
-- SupaBase
+### Shemaa Kamal — Career tracker, statistik & infrastruktur
+- Databasschema och SQL migrationer
+- Ansökningshantering med CRUD, kanban, drag & drop och sökning
+- Dashboard med nivåbaserad statistik, diagram och insikter
+- Målhantering med delmål och progress
+- CSV och PDF export med nivåbaserad åtkomst
+- Auth, route protection och server-side behörighetskontroller
+- API integration mellan frontend och backend
+- Setup och deploy via Supabase, Vercel och Render
+- Postman-testning av API
 
-Deploy
-- Vercel
-- Render
+### Nikolaos Kiosses — Konto & betalningar
+- Landningssida och navigation
+- Login, registrering och logout
+- Uppgraderingsflöde och nivåval
+- Profilhantering
+- Pris och informationsmodaler
+- Backend för betalningar och profil
 
-Test
-- Postman Endpoint
-- ESLint (syntax)
+### Harald Wallin — Innehåll & admin
+- Delade modal komponenter
+- Artikelsida och artikelvisning
+- Nivåbaserad åtkomst till artiklar
+- Adminfunktioner för att skapa, redigera och radera artiklar
+- Backend för articles CRUD och adminbehörighet
 
-## Kom igång
+## Prenumerationsnivåer
 
-Klona projektet:
+| Funktion | Grundpaket | Plus (79 kr/mån) | Premium (149 kr/mån) |
+|---|---|---|---|
+| Ansökningar | max 10 | max 50 | obegränsat |
+| Mål | — | max 2 | obegränsat |
+| Dashboard | räknare | + diagram | + insikter |
+| Export | — | CSV | CSV + PDF |
+| Artiklar | grund | grund + plus | alla |
 
-bash
-- git clone https://github.com/shemaakamal00/group4.git
-- cd group4
+## Funktioner
 
-### Frontend
-- cd client
-- npm install
-- npm run dev
+- Autentisering med Supabase Auth
+- Tre prenumerationsnivåer med olika åtkomst
+- Kanban vy för jobbansökningar med drag & drop och sökning
+- Dashboard med statistik, diagram och insikter
+- Mål och delmål med progress
+- Nivåbaserat artikelinnehåll
+- Export av ansökningar till CSV och PDF
+- Uppgraderingsflöde när användaren når en gräns eller öppnar en låst funktion
+
+## Lokal setup
+
+Klona repot:
+
+```bash
+git clone https://github.com/shemaakamal00/group4.git
+cd group4
+```
 
 ### Backend
 
-- cd server
-- npm install
+```bash
+cd server
+npm install
+cp .env.example .env
+npm run dev
+```
 
+Servern startar på `http://localhost:3000`.
+
+### Frontend
+
+```bash
+cd client
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Frontend startar på `http://localhost:5173`.
+
+### Databas
+
+Kör SQL filen i Supabase SQL Editor:
+
+1. `db/schema.sql`
+
+## API
+
+API:et innehåller endpoints för:
+
+- `/api/applications` — ansökningar, statistik, användning och export
+- `/api/goals` — mål, delmål och användningsgränser
+- `/api/articles` — artiklar och adminhantering
+- `/api/payments` — nivåuppgradering
+- `/api/profile` — profil och nivåinformation
+
+Endpoints under `/api/*` kräver autentisering med Bearer token om inget annat anges.
+
+## Testning
+
+Backend har testats manuellt med Postman och frontend har testats manuellt i webbläsaren för samtliga prenumerationsnivåer.
 
 ## Projektstruktur
 
-### Pages
-- HomePage/Landningssida: "Välkommen - logga in eller sign-up" 
-- ApplicationsPage/”Ansökningar” : Visar och hanterar användarens ansökningar
-- GoalsPage/”Mål” : Visar och hanterar användarens mål
-- ArticlesPage: En sida som exponerar articleCards för users och där admin kan skapa articles.
-- ArticlePage: Sidan som visar en specifik article.
-- DashboardPage/Översikt: Sida som innehåller statistik och dashboard
+```text
+group4/
+├── client/          # React-frontend
+│   └── src/
+│       ├── components/
+│       ├── context/
+│       ├── lib/
+│       ├── pages/
+│       ├── styles/
+│       └── types/
+├── server/          # Express-backend
+│   └── src/
+│       ├── controllers/
+│       ├── middleware/
+│       ├── routes/
+│       ├── services/
+│       └── types/
+├── docs/            # Databas, diagram och mockups
+└── postman/         # API-testning
+```
 
-(gammal text nedan)
-Förslag
-- ArticlesPage: En sida där betygskriteriet ”- En administratör ska kunna lägga till innehållssidor och välja vilken nivå man måste ha för att få se den ” kan uppfyllas. Admin kan skapa en Article, egentligen endast med Rubrik, beskrivning, brödtext och vilken plan man måste få ha för att få läsa den. I verkligheten kanske arikeln innehållit t.ex en video om retorik-tips eller dylikt, lite mer ”preimium-content”. Varje ArticleCard öppnas som en ny page.
--ArticlePage: Varje artikel får egen url (/articles/:id).
+## Licens
 
-### Modals
-- AuthModal: Login/Register
-- ApplicationModal: create/view/edit ett applicationCard
-- GoalModal: create/view/edit ett goal
-- ProfileModal: Visar användarens egna info (kan redigeras?), plan, och kvitton. 
-- UpgradeModal: En vy där alla perks med att uppgradera listas, + betalning
-- AdminSettingsModal: En överblick över t.ex hur många applications varje payment plan får ha,  och vilka features som är tillgängliga.
-- ArticleModal: create/view/edit en Article.
-
-### Components
-- ApplicationCard
-- ApplicationList
-- ApplicationForm
-- ApplicationStatusIcon
-
-- GoalCard
-- GoalList
-- ReceiptCard
-- ReceiptList
-
-- Modal(Generell modal-prefab)
-- Loader/spinner
-
-- ArticleCard
-- ArticleList
-- ArticleForm (titel, beskrivning, brödtext, required plan)
+Skolprojekt inte avsett för produktion.
