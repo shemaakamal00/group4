@@ -14,6 +14,19 @@ export async function purchaseLevel(userId: string, levelId: number) {
     return { data: null, error: levelError ?? new Error("Nivån hittades inte") };
   }
 
+  const { data: currentProfile, error: profileFetchError } = await supabase
+    .from("profile")
+    .select("level_id")
+    .eq("id", userId)
+    .single();
+  if (profileFetchError || !currentProfile) {
+    return { data: null, error: profileFetchError ?? new Error("Profilen hittades inte") };
+  }
+
+  if (currentProfile.level_id === levelId) {
+    return { data: null, error: new Error("Du har redan den här nivån") };
+  }
+
   if (Number(level.price) === 0) {
     const { error: profileError } = await supabase
       .from("profile")
