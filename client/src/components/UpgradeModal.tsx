@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./shared/modal";
 import ModalFooter from "./shared/modalFooter";
 import { apiFetch } from "../lib/api";
 import { useUpgradeModal } from "../context/UpgradeModalContext";
 import type { PaymentReceipt } from "../types/payment";
+import type { Profile } from "../types/profile";
 
 type Level = { id: number; name: string; price: string; priceValue: number; description: string };
 
@@ -47,6 +48,14 @@ export default function UpgradeModal() {
   const [receipt, setReceipt] = useState<PaymentReceipt | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentLevelName, setCurrentLevelName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    apiFetch<Profile>("/api/profile")
+      .then((data) => setCurrentLevelName(data.level_name))
+      .catch((err) => console.error("Kunde inte hämta profil:", err));
+  }, [isOpen]);
 
   function resetState() {
     setStep("select");
@@ -84,6 +93,7 @@ export default function UpgradeModal() {
   }
 
   function handleSelectLevel(level: Level) {
+    if (level.name === currentLevelName) return;
     setError(null);
     setSelectedLevel(level);
     if (level.priceValue === 0) {
@@ -215,21 +225,24 @@ export default function UpgradeModal() {
           <p className="subtitle">Välj den nivå du vill uppgradera till.</p>
           {error && <p className="pill pill--rejected">{error}</p>}
           <div className="grid grid-3">
-            {LEVELS.map((level) => (
-              <div className="card center" key={level.id}>
-                <h3>{level.name}</h3>
-                <p className="stat__value">{level.price}</p>
-                <p className="muted">{level.description}</p>
-                <button
-                  type="button"
-                  className="btn btn--primary"
-                  disabled={loading}
-                  onClick={() => handleSelectLevel(level)}
-                >
-                  Välj {level.name}
-                </button>
-              </div>
-            ))}
+            {LEVELS.map((level) => {
+              const isCurrent = level.name === currentLevelName;
+              return (
+                <div className="card center" key={level.id}>
+                  <h3>{level.name}</h3>
+                  <p className="stat__value">{level.price}</p>
+                  <p className="muted">{level.description}</p>
+                  <button
+                    type="button"
+                    className="btn btn--primary"
+                    disabled={loading || isCurrent}
+                    onClick={() => handleSelectLevel(level)}
+                  >
+                    {isCurrent ? "Din nuvarande nivå" : `Välj ${level.name}`}
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </>
       )}
